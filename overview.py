@@ -20,8 +20,7 @@
 
 
 # Time of the Year
-#   feat_day_mon
-    feat_day_tue
+    x day of the week
     day of the month
     month
     Public holidays
@@ -66,6 +65,9 @@
         Iron...
         Average Labour Rates
     Company tax rates (average)
+    Job Advertisments (ANZ)
+    Unemployment Rate
+    GDP
 
 
 
