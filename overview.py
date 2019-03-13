@@ -5,24 +5,24 @@
 # Definition of features.........
 
 # ==================================================================================================
-# Period Identifyer
-    # todo - period_no          - Need to generate a sequential period number
+# DONE Period Identifyer
+    # DONE - period_no          - Need to generate a sequential period number
     # We may need a date filler routine as well? not sure about This - maybe we could just find missing dates and make sure this makes sense
 
 # ==================================================================================================
 # Basic Share Master Data and Info - need to source this from somewhere
-    # Industry
-    # Dividend_Cum_Date
-    # Dividend_annoncement_Date
-    # Dividend_amount
-    # Dividend_yield
-    # Franking Credits amount and is it even offered
+    # todo  - Industry
+    # todo  - Dividend_Cum_Date
+    # todo  - Dividend_annoncement_Date
+    # todo  - Dividend_amount
+    # todo  - Dividend_yield
+    # todo  - Franking Credits amount and is it even offered
 
 # ==================================================================================================
 # Date Related features
 # PREFIX = feature_date_
     # DONE  - _is_mon               - day of the week
-    # todo  - _is_jan               - which month
+    # DONE  - _is_jan               - which month
     # todo  - _is_pub_holiday       - Public holidays
     #       - _pub_hol_yesterday    - was a public holiday yesterday
     #       - _pub_hol_tomorrow     - public holiday scheduled for tomorrow
