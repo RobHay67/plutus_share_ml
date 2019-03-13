@@ -33,8 +33,8 @@ def load_OHLC_share_df():
     print ( 'first date in the share file = ', share_df.trading_date.min() )
     print ( 'last  date in the share file = ', share_df.trading_date.max() )
     print ( 'total records  in share file = ', len(share_df) )
+    print ( 'Completed - loading OHLC Share data' )
     print_seperator('key')
-    print ( 'finished loading OHLC Share data' )
     return ( share_df )   
     # share_df.trading_date.max()
     # len(share_df)
@@ -43,7 +43,7 @@ def save_OHLC_share_df( share_df) :
     print_seperator('key')   
     print ( 'commencing save of OHLC Share data' )
     share_df.to_csv(ohlc_share_df_filename, index=False)
-    print ( 'finished saving OHLC Share data' )
+    print ( 'Completed - saving OHLC Share data' )
     print_seperator('key')   
 
 def list_of_share_codes(share_df):
@@ -52,13 +52,21 @@ def list_of_share_codes(share_df):
 
 # Functions
 
+def add_sequential_counter( share_df ):
+    share_df.sort_values(['trading_date', 'share_code'], ascending=True, inplace=True)
+    share_df['counter'] = share_df.groupby(['share_code']).cumcount()+1
+    print ( 'Completed - adding counter to share daatframe')
+    return ( share_df )
+
+
+
 def check_dataframe_if_these_cols_exist(dataframe, column_list, dataframe_name):
     for column in column_list:
         if column not in dataframe.columns:
             print ( 'FAILED <', column, '> missing from', dataframe_name )
             return ( 'FAILED' )
-        else:
-            print ( 'found ', column)
+        # else:
+        #     print ( 'found ', column)
 
 
 
@@ -67,17 +75,16 @@ def add_day_of_the_week_features( share_df ):
     required_columns_list = [   'trading_date' ]
 
     if check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
-        print ( 'i am running ' )
-        new_features_col_list = [   'feat_date_is_mon',
-                                'feat_date_is_tue',
-                                'feat_date_is_wed',
-                                'feat_date_is_thur',
-                                'feat_date_is_fri',
-                                'feat_date_is_sat',
-                                'feat_date_is_sun']
+        new_features_being_added = ['feat_date_is_mon',
+                                    'feat_date_is_tue',
+                                    'feat_date_is_wed',
+                                    'feat_date_is_thur',
+                                    'feat_date_is_fri',
+                                    'feat_date_is_sat',
+                                    'feat_date_is_sun'  ]     
 
-        if new_features_col_list[0] in share_df.columns: 
-            share_df.drop(new_features_col_list, axis=1, inplace=True) 
+        if new_features_being_added[0] in share_df.columns: 
+            share_df.drop( new_features_being_added, axis=1, inplace=True) 
 
         share_df['weekday'] = share_df['trading_date'].dt.dayofweek
 
@@ -90,7 +97,8 @@ def add_day_of_the_week_features( share_df ):
         share_df['feat_date_is_sun']  = np.where( share_df.weekday == 6, 1, 0)
 
         del share_df['weekday']
- 
+
+        print ( 'Completed - adding day of the week features')
         return ( share_df )
     else:
         return ( share_df )
