@@ -25,20 +25,25 @@ def print_seperator( seperator_type ):
         print ( '*' * 120 )
 
 
+def list_of_share_codes(share_df):
+    return ( share_df.share_code.unique().tolist() )
+
+
 def load_OHLC_share_df():
     print_seperator('key')   
     print ( 'commencing loading of OHLC Share data' )
+    print_seperator('single')
     share_df = pd.read_csv( ohlc_share_df_filename, dtype=share_df_dict, parse_dates=['trading_date'] )
     # Ensure the columns are in the order you want
 
-    print ( 'first date in the share file = ', share_df.trading_date.min() )
-    print ( 'last  date in the share file = ', share_df.trading_date.max() )
-    print ( 'total records  in share file = ', len(share_df) )
+    print ( 'first date        in the share file = ', share_df.trading_date.min() )
+    print ( 'last  date        in the share file = ', share_df.trading_date.max() )
+    print ( 'total records     in share file     = ', len(share_df) )
+    print ( 'total no of codes in share file     = ', len( list_of_share_codes( share_df) ) )
+    print_seperator('single')
     print ( 'Completed - loading OHLC Share data' )
     print_seperator('key')
     return ( share_df )   
-    # share_df.trading_date.max()
-    # len(share_df)
 
 def save_OHLC_share_df( share_df) :
     print_seperator('key')   
@@ -48,8 +53,6 @@ def save_OHLC_share_df( share_df) :
     print ( 'Completed - saving OHLC Share data' )
     print_seperator('key')   
 
-def list_of_share_codes(share_df):
-    return ( share_df.share_code.unique().tolist() )
 
 
 # Functions
@@ -86,31 +89,26 @@ def add_sequential_counter( share_df ):
 
 
 
+def lookup_share_value ( row, share_df, no_of_days, value_column ):
+    share_code      = row.name[0]
+    current_period  = row.name[1]
+    minimum_period  = row['counter_min']
+    maximum_period  = row['counter_max']
+    current_value   = row[value_column]
 
 
+    period_to_find = current_period + no_of_days
 
+    if period_to_find < minimum_period: period_to_find = minimum_period
+    if period_to_find > maximum_period: period_to_find = maximum_period
 
-
-
-
-# def price_categorisation():
-#     print ('this')
-#     # do some cool stuff here
-
-
-# def volume_categorisation():
-#     # do some cool stuff here
-
-
-
-
-
-
-
-
+    lookup_value      = share_df.loc[ ( share_code, period_to_find ), [ value_column ] ]
     
+    if no_of_days < 0:
+        percentage_change =  ( current_value - lookup_value ) / lookup_value
+    else :
+        percentage_change =  ( lookup_value - current_value ) / current_value
 
-    
-    
-# def share_code_list(share_df):
-#     return ( share_df.share_code.tolist() )
+    return ( percentage_change )
+
+
