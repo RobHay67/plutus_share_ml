@@ -15,6 +15,8 @@ share_df_dict = { 'share_code':'object',
                     'close':'float64', 
                     'volume':'float64'              }
 
+print ( 'test')
+
 
 def print_seperator( seperator_type ):
     if seperator_type=='key':

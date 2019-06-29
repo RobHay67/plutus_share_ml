@@ -20,6 +20,10 @@ share_df = volume.volume_values( share_df )
 share_df = price.price_values( share_df )
 
 
+#########################
+# maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
+
+
 
 
 # ----------------------------------------------- Attach Date Features to the dataset
