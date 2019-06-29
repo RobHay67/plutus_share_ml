@@ -1,14 +1,16 @@
-import pandas as pd
+# import pandas as pd
 import numpy as np
-
-import app
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Local Modules
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+from common                     import check_dataframe_if_these_cols_exist
 
 
 
 def add_day_of_the_week_features( share_df ):
     required_columns_list = [   'trading_date' ]
 
-    if app.check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
+    if check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
         new_features_being_added = ['feat_date_is_mon',
                                     'feat_date_is_tue',
                                     'feat_date_is_wed',
@@ -41,7 +43,7 @@ def add_day_of_the_week_features( share_df ):
 def add_month_of_the_year_features( share_df ):
     required_columns_list = [   'trading_date' ]
 
-    if app.check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
+    if check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
         new_features_being_added = ['feat_date_is_jan',
                                     'feat_date_is_feb',
                                     'feat_date_is_mar',
