@@ -12,6 +12,7 @@
 import pandas as pd
 import numpy as np
 import pathlib                      # for handling local dorectories
+import time                         # for reporting how much time the functions take to finish
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,10 +22,15 @@ from data_OHLC                      import load_OHLC_share_df, list_of_share_cod
 from features_volume                import add_average_volume, volume_values
 from features_price                 import price_values
 from features_dates                 import add_day_of_the_week_features, add_month_of_the_year_features
+from application_log                import log_application_header, log_application_footer
 
 
-pd.set_option('display.max_columns', None)
-print ( '\n' * 10 )
+# pd.set_option('display.max_columns', None)
+# print ( '\n' * 10 )
+
+
+application_start_time = time.time()  
+log_application_header()
 
 
 # ----------------------------------------------- load the OHLC share data from Disk
@@ -34,7 +40,7 @@ list_of_share_codes = list_of_share_codes( share_df )
 share_df            = add_sequential_counter( share_df )                # Add a counter for the code to reference
 
 share_df            = add_average_volume( share_df )                    # Attach Volume Features to the dataset
-share_df            = volume_values( share_df )                                    # Attach Volume Features to the dataset
+# share_df            = volume_values( share_df )                                    # Attach Volume Features to the dataset
 
 # share_df = price_values( share_df )                                     # Attach Price  Features to the dataset
 #########################
@@ -51,6 +57,7 @@ share_df = add_month_of_the_year_features( share_df )
 # ----------------------------------------------- Save the OHLC Share Dataframe to Disk
 # app.save_OHLC_share_df( share_df )
 
+log_application_footer(application_start_time)
 
 
 
