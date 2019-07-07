@@ -18,28 +18,24 @@ import time                         # for reporting how much time the functions 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # from application_log                import print_seperator
 
-from data_OHLC                      import load_OHLC_share_df, list_of_share_codes, add_sequential_counter
-from features_volume                import add_average_volume, volume_values
+from data_OHLC                      import ohlc_loader, load_OHLC_share_df, add_sequential_counter
+from features_volume                import add_volumn_features
 from features_price                 import price_values
 from features_dates                 import add_day_of_the_week_features, add_month_of_the_year_features
 from application_log                import log_application_header, log_application_footer
 
 
-# pd.set_option('display.max_columns', None)
-# print ( '\n' * 10 )
-
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Application CEO
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 application_start_time = time.time()  
 log_application_header()
 
-
-# ----------------------------------------------- load the OHLC share data from Disk
-share_df            = load_OHLC_share_df()
-list_of_share_codes = list_of_share_codes( share_df )
-
-share_df            = add_sequential_counter( share_df )                # Add a counter for the code to reference
-
-share_df            = add_average_volume( share_df )                    # Attach Volume Features to the dataset
+share_df            = ohlc_loader()                                              # load the OHLC share data from Disk
+# list_of_share_codes = list_of_share_codes( share_df )
+# ----------------------------------------------- volume Indicators
+share_df            = add_volumn_features( share_df )
+# share_df            = add_average_volume( share_df )                    # Attach Volume Features to the dataset
 # share_df            = volume_values( share_df )                                    # Attach Volume Features to the dataset
 
 # share_df = price_values( share_df )                                     # Attach Price  Features to the dataset
@@ -48,8 +44,8 @@ share_df            = add_average_volume( share_df )                    # Attach
 
 
 # ----------------------------------------------- Attach Date Features to the dataset
-share_df = add_day_of_the_week_features( share_df )
-share_df = add_month_of_the_year_features( share_df )
+# share_df = add_day_of_the_week_features( share_df )
+# share_df = add_month_of_the_year_features( share_df )
 
 # print ( share_df.tail(7) )
 
@@ -82,6 +78,7 @@ log_application_footer(application_start_time)
 
 # adding past volumn is very slow and not flixible - lets see what we can do with this
 # add file state save after modifications
+# Ensure the columns are in the order you want
 
 
 

@@ -4,16 +4,17 @@
 import time                             # for reporting how much time the functions take to finish
 import datetime                         # use for setting the end of campaign date
 # ....x....1....x....2....x....3....x....4....x....5....x....6....x....7....x....8....x....9....x....0....x....1....x....2....x....3....x....4....x....5....x....6....x....7
-tab1, tab2, tab3, tab4, tab5, tab6 = 63, 12, 35, 10, 10, 17
-tab_to_end  = tab1 + tab2 + tab3 + tab4 
-line_length = tab1 + tab2 + tab3 + tab4 + tab5
+tab1, tab2, tab3, tab4, tab5, tab6 = 70, 15, 15, 10, 10, 20
+tab_to_end  = tab1 + tab2 + tab3 + tab4 + tab5
+line_length = tab1 + tab2 + tab3 + tab4 + tab5 + tab6
 # ljust lengthens the printed word to the specified number of spaces - so 'word'.ljust(5) results in 'word ' with the extra space at the end.
 col_headings = str      ( 
                         'process'.                  ljust(tab1) + 
                         'progress'.                 ljust(tab2) + 
-                        'rows'.                     ljust(tab3) + 
-                        'columns'.                  ljust(tab4) +
-                        'load time'.                ljust(tab5)      
+                        'share codes'.              ljust(tab3) + 
+                        'rows'.                     ljust(tab4) + 
+                        'columns'.                  ljust(tab5) +
+                        'load time'.                ljust(tab6)      
                         )
 
 
@@ -44,19 +45,52 @@ def log_application_footer( start_time ):
     print_line_of_equals()
     print(      'FINISHED PROCESSING @', datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'), '- total load time =', time_difference_seconds, 'seconds  - ', time_difference_minutes, 'minutes' )
     print_line_of_equals()
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Core Process Section Header and Footer - used for Load Tables, Merge Tables, Add Features
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+def log_core_process_header( core_process ):
+    print_line_of_dashes()
+    print ( core_process )
+    print ( col_headings )
+    print_line_of_dashes()
 
+def log_core_process_footer( core_process, start_time):
+    current_time = time.time()
+    time_difference_seconds = str ( round( ( current_time - start_time ), 3 ) )
+    time_difference_seconds = ( '.'.join(map('{0:0>2}'.format, time_difference_seconds.split('.'))) )   
+    time_difference_minutes = str ( round( ( ( current_time - start_time ) / 60 ), 3 ) )
+    time_difference_minutes = ( '.'.join(map('{0:0>3}'.format, time_difference_minutes.split('.'))) )   
+    print_line_of_dashes()
+    print       (      
+                # core_process.                                   ljust( tab1 - 1        ), 
+                ''.                                   ljust( tab1 - 1        ), 
+                str( 'COMPLETED' ).                             ljust( tab2 - 1        ), 
+                str( 'total time =').                           ljust( tab3 - 1        ), 
+                str( time_difference_seconds + ' seconds' ).    ljust( tab4 + tab5 - 4 ), 
+                str( time_difference_minutes + ' minutes' ) 
+                )
 
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Sub Process - specific process currently being undertaken
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def log_process_commencing( sub_process ):
-    print( str(sub_process ).ljust( 50 ), end ='')
+    print( str(sub_process ).ljust( tab1 ), end ='')
 
 
-def log_process_completed( no_of_rows, no_of_columns, start_time, result='Completed', error_message=None):
+def log_process_completed( share_df, start_time, result='Completed', error_message=None):
+    no_of_rows          = len( share_df )
+    no_of_columns       = len( share_df.columns )
+    no_of_share_codes   = len( share_df.share_code_desc.unique().tolist() )   
+
     current_time = time.time()
     diff = str ( round( ( current_time - start_time ), 3 ) )
     time_difference = ( '.'.join(map('{0:0>3}'.format, diff.split('.'))) )  
     if error_message is not None : result =  '-FAILURE-'
-    print( result.ljust( tab2 - 1),  str(no_of_rows).ljust( tab3 - 1 ),  str(no_of_columns).ljust( tab4 - 1 ), 'seconds = ' + str ( time_difference ) )
+    print(  result.                     ljust( tab2 - 1), 
+            str( no_of_share_codes ).   ljust( tab3 - 1 ), 
+            str( no_of_rows ).          ljust( tab4 - 1 ),  
+            str( no_of_columns ).       ljust( tab5 - 1 ), 
+            'seconds = ' + str ( time_difference ) )
     if error_message is not None : print ( error_message )
 
 
