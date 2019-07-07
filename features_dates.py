@@ -1,87 +1,86 @@
-# import pandas as pd
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# External Modules
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 import numpy as np
+import time                         # for reporting how much time the functions take to finish
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from common                     import check_dataframe_if_these_cols_exist
-
-
+from application_log                import log_core_process_header, log_core_process_footer
+from application_log                import log_process_commencing,  log_process_completed
 
 def add_day_of_the_week_features( share_df ):
-    required_columns_list = [   'trading_date' ]
-
-    if check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
-        new_features_being_added = ['feat_date_is_mon',
-                                    'feat_date_is_tue',
-                                    'feat_date_is_wed',
-                                    'feat_date_is_thur',
-                                    'feat_date_is_fri',
-                                    'feat_date_is_sat',
-                                    'feat_date_is_sun'  ]     
-
-        if new_features_being_added[0] in share_df.columns: 
-            share_df.drop( new_features_being_added, axis=1, inplace=True) 
-
+    trading_day_dict = {
+                        0 : 'mon',
+                        1 : 'tue',
+                        2 : 'wed',
+                        3 : 'thur',
+                        4 : 'fri',
+                        5 : 'sat',
+                        6 : 'sun',
+                        }
+    if 'trading_date' in share_df.columns:
         share_df['weekday'] = share_df['trading_date'].dt.dayofweek
 
-        share_df['feat_date_is_mon']  = np.where( share_df.weekday == 0, 1, 0)
-        share_df['feat_date_is_tue']  = np.where( share_df.weekday == 1, 1, 0)
-        share_df['feat_date_is_wed']  = np.where( share_df.weekday == 2, 1, 0)
-        share_df['feat_date_is_thur'] = np.where( share_df.weekday == 3, 1, 0)
-        share_df['feat_date_is_fri']  = np.where( share_df.weekday == 4, 1, 0)
-        share_df['feat_date_is_sat']  = np.where( share_df.weekday == 5, 1, 0)
-        share_df['feat_date_is_sun']  = np.where( share_df.weekday == 6, 1, 0)
+        for day_no, day_name in trading_day_dict.items():
+            function_start_time = time.time()
+            log_process_commencing( str( 'adding day name for ' + day_name )  )
+
+            new_col_name = str( 'feat_date_is_' + day_name)
+            if new_col_name in share_df.columns: share_df.drop( new_col_name, axis=1, inplace=True) 
+
+            share_df[new_col_name]  = np.where( share_df.weekday == day_no, 1, 0)
+
+            log_process_completed( share_df, function_start_time )
 
         del share_df['weekday']
-
-        print ( 'Completed - adding day of the week features')
         return ( share_df )
-    else:
-        return ( share_df )
-
+    else: log_process_completed( share_df, time.time(), error_message='trading_date col missing from shares_df' ); return( share_df )
 
 def add_month_of_the_year_features( share_df ):
-    required_columns_list = [   'trading_date' ]
+    month_no_dict =     {
+                        1  : 'jan',
+                        2  : 'feb',
+                        3  : 'mar',
+                        4  : 'apr',
+                        5  : 'may',
+                        6  : 'jun',
+                        7  : 'jul',
+                        8  : 'aug',
+                        9  : 'sep',
+                        10 : 'oct',
+                        11 : 'nov',
+                        12 : 'dec',
+                        }
 
-    if check_dataframe_if_these_cols_exist( share_df, required_columns_list, 'share dataframe' ) != 'FAILED':
-        new_features_being_added = ['feat_date_is_jan',
-                                    'feat_date_is_feb',
-                                    'feat_date_is_mar',
-                                    'feat_date_is_apr',
-                                    'feat_date_is_may',
-                                    'feat_date_is_jun',
-                                    'feat_date_is_jul',
-                                    'feat_date_is_aug',
-                                    'feat_date_is_sep',
-                                    'feat_date_is_oct',
-                                    'feat_date_is_nov',
-                                    'feat_date_is_dec'  ]     
-
-        if new_features_being_added[0] in share_df.columns: 
-            share_df.drop( new_features_being_added, axis=1, inplace=True) 
-
+    if 'trading_date' in share_df.columns:
         share_df['month'] = share_df['trading_date'].dt.month
 
-        share_df['feat_date_is_jan']  = np.where( share_df.month ==  1, 1, 0)
-        share_df['feat_date_is_feb']  = np.where( share_df.month ==  2, 1, 0)
-        share_df['feat_date_is_mar']  = np.where( share_df.month ==  3, 1, 0)
-        share_df['feat_date_is_apr']  = np.where( share_df.month ==  4, 1, 0)
-        share_df['feat_date_is_may']  = np.where( share_df.month ==  5, 1, 0)
-        share_df['feat_date_is_jun']  = np.where( share_df.month ==  6, 1, 0)
-        share_df['feat_date_is_jul']  = np.where( share_df.month ==  7, 1, 0)
-        share_df['feat_date_is_aug']  = np.where( share_df.month ==  8, 1, 0)
-        share_df['feat_date_is_sep']  = np.where( share_df.month ==  9, 1, 0)
-        share_df['feat_date_is_oct']  = np.where( share_df.month == 10, 1, 0)
-        share_df['feat_date_is_nov']  = np.where( share_df.month == 11, 1, 0)
-        share_df['feat_date_is_dec']  = np.where( share_df.month == 12, 1, 0)
-   
+        for month_no, month_name in month_no_dict.items():
+            function_start_time = time.time()
+            log_process_commencing( str( 'adding month name for ' + month_name )  )
+
+            new_col_name = str( 'feat_date_is_' + month_name )
+            if new_col_name in share_df.columns: share_df.drop( new_col_name, axis=1, inplace=True) 
+            
+            share_df[ new_col_name ]  = np.where( share_df.month ==  month_no, 1, 0)
+
+            log_process_completed( share_df, function_start_time ) 
 
         del share_df['month']
+        return ( share_df )
+    else: log_process_completed( share_df, time.time(), error_message='trading_date col missing from shares_df' ); return( share_df )
 
-        print ( 'Completed - adding month of the year features')
-        return ( share_df )
-    else:
-        return ( share_df )
+def add_date_features( share_df ):
+    core_process_name           = 'Add Date Related Features'
+    core_process_start_time     = time.time()
+    log_core_process_header     (  core_process_name )
+
+    share_df = add_day_of_the_week_features( share_df )
+    share_df = add_month_of_the_year_features( share_df )
+
+    log_core_process_footer( core_process_name, core_process_start_time )
+    return ( share_df )  
 
 
 

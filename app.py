@@ -21,7 +21,7 @@ import time                         # for reporting how much time the functions 
 from data_OHLC                      import ohlc_loader, load_OHLC_share_df, add_sequential_counter
 from features_volume                import add_volumn_features
 from features_price                 import price_values
-from features_dates                 import add_day_of_the_week_features, add_month_of_the_year_features
+from features_dates                 import add_date_features
 from application_log                import log_application_header, log_application_footer
 
 
@@ -31,21 +31,16 @@ from application_log                import log_application_header, log_applicati
 application_start_time = time.time()  
 log_application_header()
 
-share_df            = ohlc_loader()                                              # load the OHLC share data from Disk
+share_df            = ohlc_loader()                                             # load the OHLC share data from Disk
 # list_of_share_codes = list_of_share_codes( share_df )
 # ----------------------------------------------- volume Indicators
-share_df            = add_volumn_features( share_df )
-# share_df            = add_average_volume( share_df )                    # Attach Volume Features to the dataset
-# share_df            = volume_values( share_df )                                    # Attach Volume Features to the dataset
+# share_df            = add_volumn_features( share_df )                           # volume Indicators
 
 # share_df = price_values( share_df )                                     # Attach Price  Features to the dataset
 #########################
 # maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
 
-
-# ----------------------------------------------- Attach Date Features to the dataset
-# share_df = add_day_of_the_week_features( share_df )
-# share_df = add_month_of_the_year_features( share_df )
+share_df            = add_date_features( share_df )                             # date related features and indicators
 
 # print ( share_df.tail(7) )
 
