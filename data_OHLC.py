@@ -37,10 +37,9 @@ share_df_dict =     {
 def load_OHLC_share_df():
     function_start_time = time.time()
     log_process_commencing( str( 'loading OHLC' )  )
+
     share_df = pd.read_csv( ohlc_share_df_filename, dtype=share_df_dict, parse_dates=['trading_date'] )
-
     share_df['share_code_desc'] = share_df['share_code']
-
 
     log_process_completed( share_df, function_start_time )
 
@@ -89,7 +88,7 @@ def add_sequential_counter( share_df ):
         return ( share_df )
 
 
-def ohlc_loader():
+def load_ohlc_data_file():
     core_process_name           = 'Load OHLC Share data'
     core_process_start_time     = time.time()
     log_core_process_header     (  core_process_name )
