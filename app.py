@@ -33,10 +33,10 @@ list_of_share_codes = list_of_share_codes( share_df )
 
 share_df            = add_sequential_counter( share_df )                # Add a counter for the code to reference
 
-share_df = add_average_volume( share_df )                               # Attach Volume Features to the dataset
-share_df = volume_values( share_df )                                    # Attach Volume Features to the dataset
+share_df            = add_average_volume( share_df )                    # Attach Volume Features to the dataset
+share_df            = volume_values( share_df )                                    # Attach Volume Features to the dataset
 
-share_df = price_values( share_df )                                     # Attach Price  Features to the dataset
+# share_df = price_values( share_df )                                     # Attach Price  Features to the dataset
 #########################
 # maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
 
@@ -45,7 +45,7 @@ share_df = price_values( share_df )                                     # Attach
 share_df = add_day_of_the_week_features( share_df )
 share_df = add_month_of_the_year_features( share_df )
 
-print ( share_df.tail(7) )
+# print ( share_df.tail(7) )
 
 
 # ----------------------------------------------- Save the OHLC Share Dataframe to Disk
@@ -58,10 +58,12 @@ print ( share_df.tail(7) )
 
 
 
-# Applications Process
 
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------
+# coding issues
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------
 # Do we 
-# 1) load all data and add all features - or 
+# 1)  load all data and add all features - or 
 # 2)  load the latest data and add the missing features to it
 
 # 1) requires fast code - which is a requirement anyway
@@ -69,4 +71,10 @@ print ( share_df.tail(7) )
 
 
 # future and past vol and price can be achieved by deleting or adding rows at the beginning or end of the current dataframe - sort of shift the column up or down and then merge back by date
+
+
+# adding past volumn is very slow and not flixible - lets see what we can do with this
+# add file state save after modifications
+
+
 
