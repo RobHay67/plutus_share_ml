@@ -19,10 +19,10 @@ import time                         # for reporting how much time the functions 
 from application_log                import log_application_header, log_application_footer
 from data_OHLC                      import load_ohlc_data_file
 from features_volume                import add_volumn_features
-from features_price                 import price_values
+from features_price                 import add_price_features
 from features_dates                 import add_date_features
 
-
+pd.set_option('display.max_columns', 500)
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Application CEO
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,15 @@ share_df            = add_date_features( share_df )                             
 # list_of_share_codes = list_of_share_codes( share_df )
 # share_df            = add_volumn_features( share_df )                           # volume Indicators
 
-# share_df = price_values( share_df )                                     # Attach Price  Features to the dataset
+print ( len(share_df.columns) )
+# print ( share_df.head(3) )
+
+
+# share_df            = add_price_features( share_df )                                     # Attach Price  Features to the dataset
+
+print ( share_df.head(3) )
+
+
 #########################
 # maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
 

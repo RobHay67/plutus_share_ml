@@ -9,7 +9,7 @@ import time                             # for reporting how much time the functi
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from common                         import check_dataframe_if_these_cols_exist, lookup_share_value
+from common                         import check_dataframe_if_these_cols_exist, lookup_share_value, format_period
 # from application_log                import print_seperator, log_process_commencing, log_process_completed
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_process_completed
@@ -18,13 +18,7 @@ from application_log                import log_process_commencing,  log_process_
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Helper Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def format_period( period_no ):
-    str_period_no = str( period_no )
-    if len( str_period_no ) == 1:
-        formatted_period = str( '0' + str_period_no )
-    else:
-        formatted_period = str( period_no )
-    return ( formatted_period )
+
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------

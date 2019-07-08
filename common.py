@@ -4,6 +4,14 @@
 
 import pandas as pd
 
+def format_period( period_no ):
+    str_period_no = str( period_no )
+    if len( str_period_no ) == 1:
+        formatted_period = str( '0' + str_period_no )
+    else:
+        formatted_period = str( period_no )
+    return ( formatted_period )
+
 
 def check_dataframe_if_these_cols_exist(dataframe, column_list, dataframe_name):
     for column in column_list:

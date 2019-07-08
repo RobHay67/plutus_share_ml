@@ -11,11 +11,11 @@ from application_log                import log_process_commencing,  log_process_
 
 def add_week_day_and_month_no( share_df ):
     function_start_time = time.time()
-    log_process_commencing( str( 'adding weekday integer ' )  )
+    log_process_commencing( str( 'adding weekday and month number' )  )
 
     if 'trading_date' in share_df.columns:
-        share_df['weekday'] = share_df['trading_date'].dt.dayofweek
-        share_df['month'] = share_df['trading_date'].dt.month
+        share_df['weekday_no'] = share_df['trading_date'].dt.dayofweek
+        share_df['month_no'] = share_df['trading_date'].dt.month
 
         log_process_completed( share_df, function_start_time )
 
@@ -41,11 +41,11 @@ def add_day_of_the_week_features( share_df ):
         new_col_name = str( 'feat_date_is_' + day_name)
         if new_col_name in share_df.columns: share_df.drop( new_col_name, axis=1, inplace=True) 
 
-        share_df[new_col_name]  = np.where( share_df.weekday == day_no, 1, 0)
+        share_df[new_col_name]  = np.where( share_df.weekday_no == day_no, 1, 0)
 
         log_process_completed( share_df, function_start_time )
 
-    del share_df['weekday']
+    # del share_df['weekday']
     return ( share_df )
     
 def add_month_of_the_year_features( share_df ):
@@ -71,11 +71,11 @@ def add_month_of_the_year_features( share_df ):
         new_col_name = str( 'feat_date_is_' + month_name )
         if new_col_name in share_df.columns: share_df.drop( new_col_name, axis=1, inplace=True) 
         
-        share_df[ new_col_name ]  = np.where( share_df.month ==  month_no, 1, 0)
+        share_df[ new_col_name ]  = np.where( share_df.month_no ==  month_no, 1, 0)
 
         log_process_completed( share_df, function_start_time ) 
 
-    del share_df['month']
+    # del share_df['month']
     return ( share_df )
   
 def add_date_features( share_df ):
@@ -87,6 +87,8 @@ def add_date_features( share_df ):
 
     share_df = add_day_of_the_week_features( share_df )
     share_df = add_month_of_the_year_features( share_df )
+
+    print ( len(share_df.columns) )
 
     log_core_process_footer( core_process_name, core_process_start_time )
     return ( share_df )  
