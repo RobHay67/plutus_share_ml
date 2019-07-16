@@ -32,16 +32,12 @@ log_application_header()
 share_df            = load_ohlc_data_file()                                             # load the OHLC share data from Disk
 share_dict          = create_share_dict( share_df )                                     # split loaded OHLC into dictionary by share code
 
-# share_df            = add_date_features( share_df )                             # date related features and indicators
+share_dict          = add_date_features( share_dict )                                   # date related features and indicators
 
-# print ( share_df.head(3) )
-# list_of_share_codes = list_of_share_codes( share_df )
-# share_df            = add_volumn_features( share_df )                           # volume Indicators
+share_dict          = add_volumn_features( share_dict )                                 # volume Indicators
 
+share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
 
-# share_df            = add_price_features( share_df )                                     # Attach Price  Features to the dataset
-
-# print ( share_df.head(3) )
 
 
 #########################
@@ -60,10 +56,10 @@ log_application_footer(application_start_time)
 # print( share_dict )
 
 
-for code, data in share_dict.items():
-    print ( code )
+for share_code, share_data in share_dict.items():
+    print ( share_code )
     print ( '' )
-    print ( data.sample(4) )
+    print ( share_data.head(5) )
 
 
 
