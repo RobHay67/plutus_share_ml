@@ -10,8 +10,8 @@ import time                         # for reporting how much time the functions 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import print_seperator
 from application_log                import log_core_process_header, log_core_process_footer
-from application_log                import log_process_commencing,  log_process_completed
-from common                         import check_dataframe_if_these_cols_exist, lookup_share_value
+from application_log                import log_process_commencing,  log_process_completed, log_share_load_completed
+from common                         import check_dataframe_if_these_cols_exist
 
 
 
@@ -49,7 +49,7 @@ def load_OHLC_share_df():
     share_df = pd.read_csv( ohlc_share_df_filename, dtype=share_df_dict, parse_dates=['trading_date'] )
     share_df['share_code_desc'] = share_df['share_code']
 
-    log_process_completed( share_df, function_start_time )
+    log_share_load_completed( share_df, function_start_time )
 
     print ( 'first date        in share file = ', share_df.trading_date.min() )         # print some additional information
     print ( 'last  date        in share file = ', share_df.trading_date.max() )
@@ -67,7 +67,7 @@ def save_ohlc_share_df( share_df) :
     share_df.reset_index( inplace=True )
     share_df.to_csv( ohlc_share_df_filename, index=False )
 
-    log_process_completed( share_df, function_start_time )
+    log_share_load_completed( share_df, function_start_time )
     log_core_process_footer( core_process_name, core_process_start_time )
 
 def add_sequential_counter( share_df ):
@@ -89,16 +89,17 @@ def add_sequential_counter( share_df ):
         share_df['counter_max'] = share_df.groupby( 'share_code')['counter'].transform('max')
 
         # share_df['index_counter'] = share_df['counter']
-        share_df = share_df.set_index(['share_code','counter'])      # set index on loaded Data
+        # share_df = share_df.set_index(['share_code','counter'])      # set index on loaded Data
 
 
-        log_process_completed( share_df, function_start_time )
+        log_share_load_completed( share_df, function_start_time )
         # print ( 'Completed - adding counter to share dataframe')
         return ( share_df )
     else:
         return ( share_df )
 
 def create_share_dict( share_df ):
+    print( 'add process tracking ')
     share_dict = {}
     share_codes = list_of_share_codes( share_df )
     for share_code in share_codes:

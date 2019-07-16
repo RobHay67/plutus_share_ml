@@ -64,19 +64,19 @@ def add_date_features( share_dict ):
     log_process_commencing( str( 'adding weekday and month number' )  )
     for share_code, share_data in share_dict.items():
         share_dict[share_code] = add_week_day_and_month_no      ( share_data )
-    log_process_completed( share_data, function_start_time )
+    log_process_completed( share_dict, function_start_time )
 
     function_start_time = time.time()
     log_process_commencing( str( 'adding day name' )  )
     for share_code, share_data in share_dict.items():
         share_dict[share_code] = add_day_of_the_week_features   ( share_data )
-    log_process_completed( share_data, function_start_time )
+    log_process_completed( share_dict, function_start_time )
 
     function_start_time = time.time()
     log_process_commencing( str( 'adding month name' )  )
     for share_code, share_data in share_dict.items():
         share_dict[share_code] = add_month_of_the_year_features ( share_data )
-    log_process_completed( share_data, function_start_time ) 
+    log_process_completed( share_dict, function_start_time ) 
         
         
     # share_data = add_day_of_the_week_features( share_data )

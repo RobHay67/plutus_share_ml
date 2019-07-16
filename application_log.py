@@ -76,11 +76,14 @@ def log_core_process_footer( core_process, start_time):
 def log_process_commencing( sub_process ):
     print( str(sub_process ).ljust( tab1 ), end ='')
 
-
-def log_process_completed( share_df, start_time, result='Completed', error_message=None):
-    no_of_rows          = len( share_df )
-    no_of_columns       = len( share_df.columns )
-    no_of_share_codes   = len( share_df.share_code_desc.unique().tolist() )   
+def log_process_completed( share_dict, start_time, result='Completed', error_message=None):
+    no_of_share_codes   = len( share_dict )
+    no_of_rows          = 0
+    no_of_columns       = 0
+    for share_data in share_dict.values():   
+        no_of_rows          += len( share_data )
+        no_of_columns       += len( share_data.columns )
+    no_of_columns   = no_of_columns / no_of_share_codes
 
     current_time = time.time()
     diff = str ( round( ( current_time - start_time ), 3 ) )
@@ -94,4 +97,18 @@ def log_process_completed( share_df, start_time, result='Completed', error_messa
     if error_message is not None : print ( error_message )
 
 
+def log_share_load_completed( share_df, start_time, result='Completed', error_message=None):
+    no_of_share_codes   = len( share_df.share_code_desc.unique().tolist() )   
+    no_of_rows          = len( share_df )
+    no_of_columns       = len( share_df.columns )
 
+    current_time = time.time()
+    diff = str ( round( ( current_time - start_time ), 3 ) )
+    time_difference = ( '.'.join(map('{0:0>3}'.format, diff.split('.'))) )  
+    if error_message is not None : result =  '-FAILURE-'
+    print(  result.                     ljust( tab2 - 1), 
+            str( no_of_share_codes ).   ljust( tab3 - 1 ), 
+            str( no_of_rows ).          ljust( tab4 - 1 ),  
+            str( no_of_columns ).       ljust( tab5 - 1 ), 
+            'seconds = ' + str ( time_difference ) )
+    if error_message is not None : print ( error_message )

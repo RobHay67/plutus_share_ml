@@ -56,12 +56,15 @@ log_application_footer(application_start_time)
 # print( share_dict )
 
 
-for share_code, share_data in share_dict.items():
-    print ( share_code )
-    print ( '' )
-    print ( share_data.head(5) )
+# for share_code, share_data in share_dict.items():
+#     print ( share_code )
+#     print ( '' )
+#     print ( share_data.head(5) )
 
-
+# for share_data in share_dict.values():
+#     # print ( share_code )
+#     print ( '' )
+#     print ( share_data.head(5) )
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
