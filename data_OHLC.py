@@ -14,12 +14,10 @@ from application_log                import log_process_commencing,  log_process_
 from common                         import check_dataframe_if_these_cols_exist, lookup_share_value
 
 
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Helper Functions
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# def list_of_share_codes(share_df):
-#     return ( share_df.share_code.unique().tolist() )
 
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# File Locations and module information
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 ohlc_share_df_folder    = pathlib.Path.home().joinpath('shares', 'ohlc', )
 ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'ohlc_shares.csv' )
 
@@ -33,6 +31,16 @@ share_df_dict =     {
                     'volume'        :'float64'              
                     }
 
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Helper Functions
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+def list_of_share_codes( share_df ):
+    share_df.reset_index( inplace=True )
+    return ( share_df.share_code.unique().tolist() )
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Workers
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def load_OHLC_share_df():
     function_start_time = time.time()
@@ -48,16 +56,19 @@ def load_OHLC_share_df():
     
     return ( share_df )   
 
-def save_OHLC_share_df( share_df) :
-    print_seperator( 'key' )   
-    print ( 'commencing save of OHLC Share data' )
+def save_ohlc_share_df( share_df) :
+    core_process_name           = 'SAVE OHLC Share data'
+    core_process_start_time     = time.time()
+    log_core_process_header     (  core_process_name )
 
-    share_df.reset_index(inplace=True)
-    share_df.to_csv(ohlc_share_df_filename, index=False)
+    function_start_time = time.time()
+    log_process_commencing( str( 'saving OHLC' )  )
 
-    print ( 'Completed - saving OHLC Share data' )
-    print_seperator( 'key' )   
+    share_df.reset_index( inplace=True )
+    share_df.to_csv( ohlc_share_df_filename, index=False )
 
+    log_process_completed( share_df, function_start_time )
+    log_core_process_footer( core_process_name, core_process_start_time )
 
 def add_sequential_counter( share_df ):
     function_start_time = time.time()
@@ -87,7 +98,17 @@ def add_sequential_counter( share_df ):
     else:
         return ( share_df )
 
+def create_share_dict( share_df ):
+    share_dict = {}
+    share_codes = list_of_share_codes( share_df )
+    for share_code in share_codes:
+        share_data = share_df[share_df.share_code_desc.isin([ share_code ])].copy()
+        share_dict.update( { share_code : share_data } )
+    return ( share_dict )
 
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Manager
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def load_ohlc_data_file():
     core_process_name           = 'Load OHLC Share data'
     core_process_start_time     = time.time()

@@ -17,7 +17,7 @@ import time                         # for reporting how much time the functions 
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_application_header, log_application_footer
-from data_OHLC                      import load_ohlc_data_file
+from data_OHLC                      import load_ohlc_data_file, save_ohlc_share_df, create_share_dict
 from features_volume                import add_volumn_features
 from features_price                 import add_price_features
 from features_dates                 import add_date_features
@@ -30,17 +30,18 @@ application_start_time = time.time()
 log_application_header()
 
 share_df            = load_ohlc_data_file()                                             # load the OHLC share data from Disk
-share_df            = add_date_features( share_df )                             # date related features and indicators
+share_dict          = create_share_dict( share_df )                                     # split loaded OHLC into dictionary by share code
+
+# share_df            = add_date_features( share_df )                             # date related features and indicators
+
+# print ( share_df.head(3) )
 # list_of_share_codes = list_of_share_codes( share_df )
 # share_df            = add_volumn_features( share_df )                           # volume Indicators
-
-print ( len(share_df.columns) )
-# print ( share_df.head(3) )
 
 
 # share_df            = add_price_features( share_df )                                     # Attach Price  Features to the dataset
 
-print ( share_df.head(3) )
+# print ( share_df.head(3) )
 
 
 #########################
@@ -48,17 +49,21 @@ print ( share_df.head(3) )
 
 
 
-# print ( share_df.tail(7) )
+# print ( share_df.head(7) )
 
 
 # ----------------------------------------------- Save the OHLC Share Dataframe to Disk
-# app.save_OHLC_share_df( share_df )
+# save_ohlc_share_df( share_df )
 
 log_application_footer(application_start_time)
 
+# print( share_dict )
 
 
-
+for code, data in share_dict.items():
+    print ( code )
+    print ( '' )
+    print ( data.sample(4) )
 
 
 
@@ -74,12 +79,13 @@ log_application_footer(application_start_time)
 # <2> requires some checking that we dont already have the data and then some cleaver merging/appending code at the end
 
 # future and past vol and price can be achieved by deleting or adding rows at the beginning or end of the current dataframe - sort of shift the column up or down and then merge back by date
-# adding past volumn is very slow and not flixible - lets see what we can do with this
+# adding past volume is very slow and not flexible - lets see what we can do with this
 
 # add file state save after modifications
 # Ensure the columns are in the order you want
 # add better iteration - loop through lists
 # add better screen logging
+# try splitting loaded share data into a dictionary
 
 
 
