@@ -29,31 +29,16 @@ pd.set_option('display.max_columns', 500)
 application_start_time = time.time()  
 log_application_header()
 
-share_df            = load_ohlc_data_file()                                             # load the OHLC share data from Disk
-share_dict          = create_share_dict( share_df )                                     # split loaded OHLC into dictionary by share code
-
+share_dict          = load_ohlc_data_file()                                             # load the OHLC share data from Disk
 share_dict          = add_date_features( share_dict )                                   # date related features and indicators
-
 share_dict          = add_volumn_features( share_dict )                                 # volume Indicators
-
 share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
 
 
-
-#########################
-# maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
-
-
-
-# print ( share_df.head(7) )
-
-
-# ----------------------------------------------- Save the OHLC Share Dataframe to Disk
+# -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
 
 log_application_footer(application_start_time)
-
-# print( share_dict )
 
 
 # for share_code, share_data in share_dict.items():
@@ -64,7 +49,7 @@ log_application_footer(application_start_time)
 # for share_data in share_dict.values():
 #     # print ( share_code )
 #     print ( '' )
-#     print ( share_data.head(5) )
+#     print ( share_data.tail(5) )
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -86,6 +71,8 @@ log_application_footer(application_start_time)
 # add better screen logging
 # try splitting loaded share data into a dictionary
 
-
-
-
+# maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
+# get rid of pychach using git ignore
+# update counter in dictionary iteration
+# add the daily dowload merging code into this application so it can be re-run or appended to somehow?
+# ask liam how to change which version of python is running on this project

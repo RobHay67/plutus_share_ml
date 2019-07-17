@@ -1,9 +1,13 @@
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # External Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 import pandas as pd
 
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Common Functions
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def format_period( period_no ):
     str_period_no = str( period_no )
     if len( str_period_no ) == 1:
@@ -12,7 +16,6 @@ def format_period( period_no ):
         formatted_period = str( period_no )
     return ( formatted_period )
 
-
 def check_dataframe_if_these_cols_exist(dataframe, column_list, dataframe_name):
     for column in column_list:
         if column not in dataframe.columns:
@@ -20,6 +23,9 @@ def check_dataframe_if_these_cols_exist(dataframe, column_list, dataframe_name):
             return ( 'FAILED' )
         # else:
         #     print ( 'found ', column)
+
+
+
 
 
 # def lookup_share_value ( row, share_df, no_of_days, value_column ):
