@@ -80,7 +80,7 @@ def log_core_process_footer( core_process, start_time):
 def log_process_commencing( sub_process ):
     print( str(sub_process ).ljust( tab1 ), end ='')
 
-def log_process_completed( share_dict, start_time, result='Completed', error_message=None):
+def log_dict_process_completed( share_dict, start_time, result='Completed', error_message=None):
     no_of_share_codes   = len( share_dict )
     no_of_rows          = 0
     no_of_columns       = 0
@@ -101,7 +101,7 @@ def log_process_completed( share_dict, start_time, result='Completed', error_mes
     if error_message is not None : print ( error_message )
 
 
-def log_share_load_completed( share_df, start_time, result='Completed', error_message=None):
+def log_df_process_completed( share_df, start_time, result='Completed', error_message=None):
     no_of_share_codes   = len( share_df.share_code.unique().tolist() )   
     no_of_rows          = len( share_df )
     no_of_columns       = len( share_df.columns )

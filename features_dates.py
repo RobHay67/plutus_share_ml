@@ -7,16 +7,35 @@ import time                         # for reporting how much time the functions 
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_core_process_header, log_core_process_footer
-from application_log                import log_process_commencing,  log_process_completed
+from application_log                import log_process_commencing,  log_df_process_completed, log_dict_process_completed
 
-def add_week_day_and_month_no( share_data ):
-    if 'trading_date' in share_data.columns:
-        share_data['weekday_no'] = share_data['trading_date'].dt.dayofweek
-        share_data['month_no'] = share_data['trading_date'].dt.month   
-        return ( share_data )
-    else: log_process_completed( share_data, time.time(), error_message='trading_date col missing from shares_df' ); return( share_data )
 
-def add_day_of_the_week_features( share_data ):
+def add_week_day( share_df ):
+    if 'trading_date' in share_df.columns:
+        function_start_time = time.time()
+        log_process_commencing( str( 'adding week day number' )  )
+
+        share_df['weekday_no'] = share_df['trading_date'].dt.dayofweek
+
+        log_df_process_completed( share_df, function_start_time )       
+        return ( share_df )
+    else: log_df_process_completed( share_df, time.time(), error_message='trading_date col missing from shares_df' ); return( share_df )
+
+def add_month_no( share_df ):
+    if 'trading_date' in share_df.columns:
+        function_start_time = time.time()
+        log_process_commencing( str( 'adding month number' )  )
+
+        share_df['month_no'] = share_df['trading_date'].dt.month   
+
+        log_df_process_completed( share_df, function_start_time )
+        return ( share_df )
+    else: log_df_process_completed( share_df, time.time(), error_message='trading_date col missing from shares_df' ); return( share_df )
+
+def add_day_name( share_df ):
+    function_start_time = time.time()
+    
+
     trading_day_dict = {
                         0 : 'mon',
                         1 : 'tue',
@@ -27,13 +46,21 @@ def add_day_of_the_week_features( share_data ):
                         6 : 'sun',
                         } 
     for day_no, day_name in trading_day_dict.items():
+        log_process_commencing( ( 'adding day name for ' + day_name ) )
+        
         new_col_name = str( 'feat_date_is_' + day_name)
-        if new_col_name in share_data.columns: share_data.drop( new_col_name, axis=1, inplace=True) 
-        share_data[new_col_name]  = np.where( share_data.weekday_no == day_no, 1, 0)
-    # del share_data['weekday']
-    return ( share_data )
+        
+        if new_col_name in share_df.columns: share_df.drop( new_col_name, axis=1, inplace=True) 
+        
+        share_df[new_col_name]  = np.where( share_df.weekday_no == day_no, 1, 0)
+
+        log_df_process_completed( share_df, function_start_time )
+    return ( share_df )
     
-def add_month_of_the_year_features( share_data ):
+def add_month_name( share_df ):
+    function_start_time = time.time()
+    
+
     month_no_dict =     {
                         1  : 'jan',
                         2  : 'feb',
@@ -49,43 +76,35 @@ def add_month_of_the_year_features( share_data ):
                         12 : 'dec',
                         }
     for month_no, month_name in month_no_dict.items():
+        log_process_commencing( ('adding month name for ' + month_name ) )
+
         new_col_name = str( 'feat_date_is_' + month_name )
-        if new_col_name in share_data.columns: share_data.drop( new_col_name, axis=1, inplace=True) 
-        share_data[ new_col_name ]  = np.where( share_data.month_no ==  month_no, 1, 0)
-    # del share_data['month']
-    return ( share_data )
+        
+        if new_col_name in share_df.columns: share_df.drop( new_col_name, axis=1, inplace=True) 
+        
+        share_df[ new_col_name ]  = np.where( share_df.month_no ==  month_no, 1, 0)
+
+        log_df_process_completed( share_df, function_start_time ) 
+    return ( share_df )
   
-def add_date_features( share_dict ):
+def add_date_features( share_df ):
     core_process_name           = 'Add Date Related Features'
     core_process_start_time     = time.time()
-    log_core_process_header     (  core_process_name )
+    log_core_process_header     (  core_process_name )  
 
-    function_start_time = time.time()
-    log_process_commencing( str( 'adding weekday and month number' )  )
-    for share_code, share_data in share_dict.items():
-        share_dict[share_code] = add_week_day_and_month_no      ( share_data )
-    log_process_completed( share_dict, function_start_time )
+    share_df = add_week_day( share_df )
 
-    function_start_time = time.time()
-    log_process_commencing( str( 'adding day name' )  )
-    for share_code, share_data in share_dict.items():
-        share_dict[share_code] = add_day_of_the_week_features   ( share_data )
-    log_process_completed( share_dict, function_start_time )
-
-    function_start_time = time.time()
-    log_process_commencing( str( 'adding month name' )  )
-    for share_code, share_data in share_dict.items():
-        share_dict[share_code] = add_month_of_the_year_features ( share_data )
-    log_process_completed( share_dict, function_start_time ) 
-        
-        
-    # share_data = add_day_of_the_week_features( share_data )
-    # share_data = add_month_of_the_year_features( share_data )
-
-    # print ( len(share_data.columns) )
-
+    share_df = add_month_no( share_df )
+    
+    share_df = add_day_name( share_df )
+    
+    share_df = add_month_name( share_df )
+    
     log_core_process_footer( core_process_name, core_process_start_time )
-    return ( share_dict )  
+    return ( share_df )  
+
+
+
 
 
 

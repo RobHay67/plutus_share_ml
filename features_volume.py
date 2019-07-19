@@ -11,7 +11,7 @@ import time                             # for reporting how much time the functi
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from common                         import check_dataframe_if_these_cols_exist, format_period
 from application_log                import log_core_process_header, log_core_process_footer
-from application_log                import log_process_commencing,  log_process_completed
+from application_log                import log_process_commencing,  log_dict_process_completed
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -61,13 +61,13 @@ def add_volumn_features( share_dict ):
     log_process_commencing( str( 'adding average volume to OHLC df' )  )
     for share_code, share_data in share_dict.items():
         share_dict[share_code] = add_average_volume               ( share_data )   
-    log_process_completed( share_dict, function_start_time )
+    log_dict_process_completed( share_dict, function_start_time )
 
     function_start_time = time.time()
     log_process_commencing( str( 'adding past & future volume' ) )
     for share_code, share_data in share_dict.items():
         share_dict[share_code] = time_shifted_average_volume      ( share_data )
-    log_process_completed( share_dict, function_start_time )
+    log_dict_process_completed( share_dict, function_start_time )
 
     log_core_process_footer( core_process_name, core_process_start_time )
     return ( share_dict )   
