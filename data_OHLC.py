@@ -85,22 +85,13 @@ def add_sequential_counter( share_data ):
     else:
         return ( share_data )
 
+
 def create_share_dict( share_df ):
     function_start_time = time.time()
     log_process_commencing( str( 'subset share codes to dictionary')  )
 
-    share_dict = {}
-    share_codes = share_df.share_code.unique().tolist()
-    print( '' )
-    for share_code in share_codes:
-        print( str( share_code + '-' ), end='' )
-        share_data = share_df[share_df.share_code.isin([ share_code ])].copy()
-
-        if 'index' in share_data.columns: 
-            share_data.drop( 'index', axis=1, inplace=True) 
-
-        share_dict.update( { share_code : share_data } )
-    
+    share_dict = dict( tuple( share_df.groupby( 'share_code' ) ) )
+   
     log_process_completed( share_dict, function_start_time )
     return ( share_dict )
 
@@ -116,11 +107,11 @@ def load_ohlc_data_file():
 
     share_dict  = create_share_dict( share_df )  
     
-    function_start_time = time.time()
-    log_process_commencing( str( 'add sequential counter to OHLC share data' ) )
-    for share_code, share_data in share_dict.items():
-        share_dict[share_code] = add_sequential_counter ( share_data )
-    log_process_completed( share_dict, function_start_time )
+    # function_start_time = time.time()
+    # log_process_commencing( str( 'add sequential counter to OHLC share data' ) )
+    # for share_code, share_data in share_dict.items():
+    #     share_dict[share_code] = add_sequential_counter ( share_data )
+    # log_process_completed( share_dict, function_start_time )
 
     log_core_process_footer( core_process_name, core_process_start_time )
     return ( share_dict )   
