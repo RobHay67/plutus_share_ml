@@ -7,6 +7,12 @@
 # External Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+import time                         # for reporting how much time the functions take to finish
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Local Modules
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+from application_log                import log_process_commencing, log_df_process_completed
 
 
 
@@ -14,17 +20,17 @@
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Working Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def feature_list( core_df, core_df_name ):
+def feature_list( share_df ):
     function_start_time = time.time()
-    log_process_commencing  ( 'determine list of features', core_df_name )
+    log_process_commencing  ( 'determine list of share features' )
 
-    column_name_list_from_core_df = list(core_df.columns.values)
+    column_name_list_from_share_df = list(share_df.columns.values)
     features = []
     invalid_ml_columns = []
 
-    for column in column_name_list_from_core_df:
+    for column in column_name_list_from_share_df:
         boolean_status = 'unknown'
-        column_to_assess = core_df[column].value_counts().to_frame().reset_index()
+        column_to_assess = share_df[column].value_counts().to_frame().reset_index()
         if column_to_assess['index'].dtype == 'int64':              # Ensure that the column is actually an integer
             if len( column_to_assess ) < 3:                         # there will be 1 or 2 columns only
                 check_sum = int( column_to_assess['index'].sum()  )  
@@ -37,10 +43,6 @@ def feature_list( core_df, core_df_name ):
         else:
             invalid_ml_columns.append(column)
 
-    log_process_completed  ( 0, 0, 1, len( features ), function_start_time )
+    log_df_process_completed( share_df, function_start_time )
     return ( features, invalid_ml_columns )
-
-
-
-
 
