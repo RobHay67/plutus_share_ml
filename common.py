@@ -21,6 +21,11 @@ def format_period( period_no ):
         formatted_period = str( period_no )
     return ( formatted_period )
 
+def format_currency_total( value ):
+    formated_currency_value = str( '$ {:,}'.format(round( value, 2)) )
+    return ( formated_currency_value )
+
+
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Manager - Convert Dataframe to a Dictionary by share_code
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------

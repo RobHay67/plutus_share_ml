@@ -15,8 +15,8 @@ from application_log                import log_process_commencing,  log_df_proce
 # File Locations and module information
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 ohlc_share_df_folder    = pathlib.Path.home().joinpath('shares', 'ohlc', )
-# ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'test_ohlc_shares.csv' )
-ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'entire_ohlc_shares.csv' )
+ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'test_ohlc_shares.csv' )
+# ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'entire_ohlc_shares.csv' )
 
 share_df_dict =     {
                     'share_code'    :'object',
