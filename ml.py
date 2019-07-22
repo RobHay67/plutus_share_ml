@@ -7,11 +7,13 @@
 # External Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+import numpy as np
 import time                         # for reporting how much time the functions take to finish
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
+from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing, log_df_process_completed
 
 
@@ -43,6 +45,35 @@ def feature_list( share_df ):
         else:
             invalid_ml_columns.append(column)
 
+    feature_labels = np.array( features )
+
     log_df_process_completed( share_df, function_start_time )
-    return ( features, invalid_ml_columns )
+    return ( features, invalid_ml_columns, feature_labels )
+
+
+
+
+def build_machine_learning_model( share_df ):
+    core_process_name           = 'Generate Machine Learning Model'
+    core_process_start_time     = time.time()
+    log_core_process_header     (  core_process_name )
+
+    features, invalid_ml_columns, feature_labels = feature_list( share_df)
+
+    print ( '' )
+    print ( features )
+    print ( '' )
+    print ( feature_labels )
+    print ( '' )
+    print ( invalid_ml_columns )
+
+
+    # features_only_df = create_df_with_features_only( core_df, core_df_name, features )
+    # mo_value_for_analysis = value_for_analysis.replace('lcl', 'aud')
+
+    # gradient_boosting_regressor( features_only_df, core_df, feature_labels, mo_value_for_analysis )
+    # ordinary_least_squares_regression ( core_df, mo_value_for_analysis, features )
+
+    log_core_process_footer( core_process_name, core_process_start_time )
+
 

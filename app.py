@@ -22,7 +22,7 @@ from data_OHLC                      import load_ohlc_data_file, save_ohlc_share_
 from features_volume                import add_volumn_features, add_average_volume
 from features_price                 import add_price_features
 from features_dates                 import add_date_features
-from ml                             import feature_list
+from ml                             import build_machine_learning_model
 
 pd.set_option('display.max_columns', 500)
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -39,8 +39,11 @@ share_df            = add_date_features( share_df )                             
 
 # share_df            = convert_dict_into_single_df( share_dict )
 
+# Machine Learning Code
 
-print ( feature_list( share_df) )
+build_machine_learning_model ( share_df )
+
+
 
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
