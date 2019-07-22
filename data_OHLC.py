@@ -2,17 +2,13 @@
 # External Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 import pandas as pd
-# import numpy as np
 import pathlib                      # for handling local dorectories
 import time                         # for reporting how much time the functions take to finish
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from application_log                import print_seperator
 from application_log                import log_core_process_header, log_core_process_footer
-from application_log                import log_process_commencing,  log_dict_process_completed, log_df_process_completed
-from common                         import check_dataframe_if_these_cols_exist
-
+from application_log                import log_process_commencing,  log_df_process_completed
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -83,10 +79,8 @@ def add_sequential_counter( share_df ):
     return ( share_df )
 
 
-
-
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Manager
+# Manager Function
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def load_ohlc_data_file():
     core_process_name           = 'Load OHLC Share data'
@@ -104,18 +98,3 @@ def load_ohlc_data_file():
 
 
 
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Manager - Convert Dataframe to Dictionary by share_code
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def create_share_dict( share_df ):
-    core_process_name           = 'Convert Dataframe into a Dictionary of Shares'
-    core_process_start_time     = time.time()
-    log_core_process_header     (  core_process_name )
-
-    log_process_commencing( str( 'subset share codes to dictionary')  )
-
-    share_dict = dict( tuple( share_df.groupby( 'share_code' ) ) )
-   
-    log_dict_process_completed( share_dict, core_process_start_time )
-    log_core_process_footer( core_process_name, core_process_start_time )
-    return ( share_dict )

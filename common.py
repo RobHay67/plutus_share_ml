@@ -1,9 +1,13 @@
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # External Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-import pandas as pd
+# import pandas as pd
+import time                             # for reporting how much time the functions take to finish
 
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Local Modules
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+from application_log                  import log_process_commencing, log_dict_process_completed
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Common Functions
@@ -16,36 +20,19 @@ def format_period( period_no ):
         formatted_period = str( period_no )
     return ( formatted_period )
 
-def check_dataframe_if_these_cols_exist(dataframe, column_list, dataframe_name):
-    for column in column_list:
-        if column not in dataframe.columns:
-            print ( 'FAILED <', column, '> missing from', dataframe_name )
-            return ( 'FAILED' )
-        # else:
-        #     print ( 'found ', column)
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Manager - Convert Dataframe to a Dictionary by share_code
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+def create_share_dict( share_df ):
+    function_start_time = time.time()
+    log_process_commencing( str( 'subset share codes into a dictionary')  )   
+
+    share_dict = dict( tuple( share_df.groupby( 'share_code' ) ) )
+   
+    log_dict_process_completed( share_dict, function_start_time )
+    return ( share_dict )
 
 
 
 
 
-# def lookup_share_value ( row, share_df, no_of_days, value_column ):
-#     share_code      = row.name[0]
-#     current_period  = row.name[1]
-#     minimum_period  = row['counter_min']
-#     maximum_period  = row['counter_max']
-#     current_value   = row[value_column]
-
-
-#     period_to_find = current_period + no_of_days
-
-#     if period_to_find < minimum_period: period_to_find = minimum_period
-#     if period_to_find > maximum_period: period_to_find = maximum_period
-
-#     lookup_value      = share_df.loc[ ( share_code, period_to_find ), [ value_column ] ]
-    
-#     if no_of_days < 0:
-#         percentage_change =  ( current_value - lookup_value ) / lookup_value
-#     else :
-#         percentage_change =  ( lookup_value - current_value ) / current_value
-
-#     return ( percentage_change )

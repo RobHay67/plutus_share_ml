@@ -7,7 +7,7 @@ import time                         # for reporting how much time the functions 
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_core_process_header, log_core_process_footer
-from application_log                import log_process_commencing,  log_df_process_completed, log_dict_process_completed
+from application_log                import log_process_commencing,  log_df_process_completed
 
 
 def add_week_day( share_df ):
@@ -60,7 +60,6 @@ def add_day_name( share_df ):
 def add_month_name( share_df ):
     function_start_time = time.time()
     
-
     month_no_dict =     {
                         1  : 'jan',
                         2  : 'feb',
@@ -103,24 +102,6 @@ def add_date_features( share_df ):
     log_core_process_footer( core_process_name, core_process_start_time )
     return ( share_df )  
 
-
-
-
-
-
-# --------------------------------------------------------------------------------------------------------------------------------------------
-# Add Date Related Features
-# process                                                               progress       share codes    rows      columns   load time           
-# --------------------------------------------------------------------------------------------------------------------------------------------
-# adding weekday and month number                                       Completed      2              6209      12        seconds = 000.004
-# adding day name for mon                                               Completed      2              6209      13        seconds = 000.003
-# adding day name for tue                                               Completed      2              6209      14        seconds = 000.003
-# adding day name for wed                                               Completed      2              6209      15        seconds = 000.002
-# adding day name for thur                                              Completed      2              6209      16        seconds = 000.002
-# adding day name for fri                                               Completed      2              6209      17        seconds = 000.002
-# adding day name for sat                                               Completed      2              6209      18        seconds = 000.002
-# adding day name for sun                                               Completed      2              6209      19        seconds = 000.004
-# adding month name for jan                                             Completed      2              6209      20        seconds = 000.004
 
 
 
