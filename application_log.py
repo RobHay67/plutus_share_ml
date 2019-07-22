@@ -37,9 +37,9 @@ def log_application_header():
     print ( '\n' )
     print(' PLUTUS Share Data Anayser and Machine Learning code base - '.upper(), ' - commenced @',  datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S') )
     print ( '\n' )
-    print ( 'Python Verions    = 3.7.4')
-    print ( 'Current Version   =', sys.version )
-    print ( 'Python Executable = ', sys.executable )   
+    print ( 'Built with Python Verion    = 3.7.4')
+    print ( 'Current Python Version      =', sys.version )
+    print ( 'Python Executable Folder    = ', sys.executable )   
     print ( '\n' )        
     print_line_of_equals()
 

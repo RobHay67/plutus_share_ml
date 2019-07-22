@@ -17,6 +17,7 @@ import time                         # for reporting how much time the functions 
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_application_header, log_application_footer
+from common                         import convert_dict_into_single_df
 from data_OHLC                      import load_ohlc_data_file, save_ohlc_share_df
 from features_volume                import add_volumn_features, add_average_volume
 from features_price                 import add_price_features
@@ -36,7 +37,9 @@ share_df            = add_date_features( share_df )                             
 share_dict          = add_volumn_features( share_df )                                 # volume Indicators
 share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
 
+share_df2            = convert_dict_into_single_df( share_dict )
 
+print ( share_df2.sample(50) )
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
 
@@ -80,6 +83,7 @@ log_application_footer(application_start_time)
 # x move day name, month name, weekday and month number into the initial loaded dataframe - it should be quicker
 
 
+# need to put the dictionaries back into a single dataframe for saving
 # maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
 # add the daily dowload merging code into this application so it can be re-run or appended to somehow?
 
