@@ -14,9 +14,10 @@ from application_log                import log_process_commencing,  log_df_proce
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # File Locations and module information
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
+ohlc_file_name          = 'test_ohlc_shares.csv'
+# ohlc_file_name          = 'entire_ohlc_shares.csv'
 ohlc_share_df_folder    = pathlib.Path.home().joinpath('shares', 'ohlc', )
-ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'test_ohlc_shares.csv' )
-# ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, 'entire_ohlc_shares.csv' )
+ohlc_share_df_filename  = pathlib.Path.joinpath(ohlc_share_df_folder, ohlc_file_name )
 
 share_df_dict =     {
                     'share_code'    :'object',
@@ -42,7 +43,7 @@ share_df_dict =     {
 
 def load_OHLC_share_df():
     function_start_time = time.time()
-    log_process_commencing( str( 'loading OHLC' )  )
+    log_process_commencing( str( 'loading OHLC file = ' +  ohlc_file_name )  )
 
     share_df = pd.read_csv( ohlc_share_df_filename, dtype=share_df_dict, parse_dates=['trading_date'] )
 

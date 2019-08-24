@@ -12,7 +12,7 @@ import time                         # for reporting how much time the functions 
 from sklearn.model_selection        import train_test_split                 # Required for Gradient Boosting Regressor
 from sklearn                        import ensemble                         # Required for Gradient Boosting Regressor
 from sklearn.metrics                import mean_absolute_error              # Required for Gradient Boosting Regressor
-# import statsmodels.formula.api as smf    
+import statsmodels.formula.api as smf    
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -22,7 +22,7 @@ from application_log                import log_process_commencing, log_df_proces
 from common                         import format_currency_total
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Reporting Functions
+# Logging
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 def results_model_overview( model, value_to_predict ):
@@ -36,20 +36,21 @@ def results_model_overview( model, value_to_predict ):
     print   ( 'Gradient Boosting Regressor' )
     print_line_of_dashes()
     print   (
-            'n_estimators =',       str( model.n_estimators ).      ljust( 10 ),
-            'learning_rate =',      str( model.learning_rate ).     ljust( 10 ),
-            'max_depth =',          str( model.max_depth )         
+            str( 'n_estimators       =' ).ljust( 20, ' ' ), str( model.n_estimators     ).ljust( 5, ' ' ),
+            str( 'learning_rate ='      ).ljust( 10, ' ' ), str( model.learning_rate    ).ljust( 5, ' ' ),
+            str( 'max_depth ='          ).ljust( 10, ' ' ), str( model.max_depth )         
             )
     print   (
-            'min_samples_leaf =',   str( model.min_samples_leaf ).  ljust( 10 ),
-            'max_features  =',      str( model.max_features ).      ljust( 10 ),
-            'loss      =',          str( model.loss )                
+            str( 'min_samples_leaf   =' ).ljust( 20, ' ' ), str( model.min_samples_leaf ).ljust( 5, ' ' ),
+            str( 'max_features  ='      ).ljust( 10, ' ' ), str( model.max_features     ).ljust( 5, ' ' ),
+            str( 'loss      ='          ).ljust( 10, ' ' ), str( model.loss )                
             )
-    print   ( 'value for analysis = ', value_to_predict )
+    print ( str( 'value for analysis =' ).ljust( 20, ' ' ), value_to_predict )
     print_line_of_dashes()
 
     # sys.stdout = old_stdout
     # print_log ( log_file, log_file_name )
+
 
 def results_model_performance ( model, single_country_df, y_train, y_test, X_train, X_test, value_to_predict ): 
     # log_file_name = '2_model_performance'
@@ -102,15 +103,16 @@ def results_important_features( model, feature_labels ):
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Working Functions
+# Workers
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 def feature_list( share_df ):
     function_start_time = time.time()
     log_process_commencing  ( 'determine list of share features' )
 
     column_name_list_from_share_df = list(share_df.columns.values)
-    features = []
-    invalid_ml_columns = []
+    valid_ml_feature_columns = []
+    invalid_ml_feature_columns = []
 
     for column in column_name_list_from_share_df:
         boolean_status = 'unknown'
@@ -123,14 +125,14 @@ def feature_list( share_df ):
                 else : boolean_status = 'not_a_0_1_combination'
 
         if boolean_status == 'is_boolean':
-            features.append(column)
+            valid_ml_feature_columns.append(column)
         else:
-            invalid_ml_columns.append(column)
+            invalid_ml_feature_columns.append(column)
 
-    feature_labels = np.array( features )
+    # feature_labels = np.array( valid_ml_feature_columns )
 
     log_df_process_completed( share_df, function_start_time )
-    return ( features, invalid_ml_columns, feature_labels )
+    return ( valid_ml_feature_columns, invalid_ml_feature_columns )
 
 def create_df_with_features_only ( share_df, features ):
     function_start_time = time.time()
@@ -140,6 +142,28 @@ def create_df_with_features_only ( share_df, features ):
 
     log_df_process_completed( share_df, function_start_time )
     return ( features_df )
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Ordinary Least Squares (OLS) - Linear Regression Analysis
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+def ordinary_least_squares_regression ( features_only_df, value_to_predict, feature_labels ):
+    # print_short_dash_line()
+
+    formula_string =  str( value_to_predict + ' ~ ' )
+    for feature in feature_labels:
+        formula_string = formula_string + str( feature + '+' )
+    formula_string = formula_string[:-1]  
+
+    ols_result = smf.ols(formula=formula_string, data=features_only_df).fit()
+    
+    # log_file_name = '4_ols_result'
+    # old_stdout, log_file = log_screen_print_statements( log_file_name, sys.stdout )
+
+    print ( ols_result.summary(), '\n' )
+    
+    # sys.stdout = old_stdout
+    # print_log ( log_file, log_file_name )
+
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Code
@@ -166,29 +190,30 @@ def gradient_boosting_regressor( features_only_df, share_df, feature_labels, val
     results_model_performance( model, share_df, y_train, y_test, X_train, X_test, value_to_predict )
     results_important_features( model, feature_labels )
 
-
-
-
-
-def machine_learning_manager( share_df ):
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Manager Function
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+def machine_learning_manager( share_df, value_to_predict ):
     core_process_name           = 'Generate Machine Learning Model'
     core_process_start_time     = time.time()
     log_core_process_header     (  core_process_name )
 
-    features, invalid_ml_columns, feature_labels = feature_list( share_df)
-
+    valid_ml_feature_columns, invalid_ml_feature_columns = feature_list( share_df)
     print ( '' )
-    print ( features )
+    print ( valid_ml_feature_columns )
     print ( '' )
-    print ( feature_labels )
-    print ( '' )
-    print ( invalid_ml_columns )
+    # print ( feature_labels )
+    # print ( '' )
+    print ( invalid_ml_feature_columns )
+    features_only_df = create_df_with_features_only( share_df, valid_ml_feature_columns )
+
+    # gradient_boosting_regressor( features_only_df, share_df, feature_labels, value_to_predict )
+    gradient_boosting_regressor( features_only_df, share_df, valid_ml_feature_columns, value_to_predict )
+
+    ordinary_least_squares_regression ( share_df, value_to_predict, valid_ml_feature_columns )
 
 
-    features_only_df = create_df_with_features_only( share_df, features )
 
-    gradient_boosting_regressor( features_only_df, share_df, feature_labels, 'close' )
-    # ordinary_least_squares_regression ( core_df, value_to_predict, features )
 
     log_core_process_footer( core_process_name, core_process_start_time )
 

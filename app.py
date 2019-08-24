@@ -25,11 +25,15 @@ from features_dates                 import add_date_features
 from ml                             import machine_learning_manager
 
 pd.set_option('display.max_columns', 500)
+
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Application CEO
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 application_start_time = time.time()  
 log_application_header()
+# ===============================
+value_to_predict    = 'close'
+# ===============================
 
 share_df            = load_ohlc_data_file()                                             # load the OHLC share data from Disk
 share_df            = add_date_features( share_df )                                     # date related features and indicators
@@ -41,14 +45,14 @@ share_df            = add_date_features( share_df )                             
 
 # Machine Learning Code
 
-machine_learning_manager ( share_df )
+machine_learning_manager ( share_df, value_to_predict )
 
 
 
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
 
-log_application_footer(application_start_time)
+log_application_footer( application_start_time )
 
 
 # for share_code, share_data in share_dict.items():
@@ -61,38 +65,6 @@ log_application_footer(application_start_time)
 #     print ( '' )
 #     print ( share_data.tail(5) )
 
-
-
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------
-# PROCESS issues
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------
-# How to proceed
-# 1)  load all data and add all features - or 
-# 2)  load the latest data and add the missing features to it
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------
-# CODE issues
-# ----------------------------------------------------------------------------------------------------------------------------------------------------------
-# x future and past vol and price can be achieved by deleting or adding rows at the beginning or end of the current dataframe - sort of shift the column up or down and then merge back by date
-# x adding past volume is very slow and not flexible - lets see what we can do with this
-# x add file state save after modifications
-# x add better iteration - loop through lists
-# x add better screen logging
-# x try splitting loaded share data into a dictionary
-# x get rid of pychach using git ignore
-# x update counter in dictionary iteration
-# x change python version for code base - ask liam how to change which version of python is running on this project
-# x redo create_share_dict - remove index check as this seems to be a python 2.7 issue
-# x add dataframe to dictionary needs to be faster - takes 631 seconds which is 70% of the run time
-# x move day name, month name, weekday and month number into the initial loaded dataframe - it should be quicker
-
-
-# need to put the dictionaries back into a single dataframe for saving
-# maybe add in some price and vol features - ie moved <1% 2-5% etc and then do some basic ML to see if anything of significance pops up
-# add the daily dowload merging code into this application so it can be re-run or appended to somehow?
-
-# save and open a dictionary object
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------------
