@@ -10,8 +10,8 @@
 # External Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 import pandas as pd
-import numpy as np
-import pathlib                      # for handling local dorectories
+# import numpy as np
+# import pathlib                      # for handling local directories
 import time                         # for reporting how much time the functions take to finish
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
@@ -31,28 +31,35 @@ pd.set_option('display.max_columns', 500)
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 application_start_time = time.time()  
 log_application_header()
-# ===============================
-value_to_predict    = 'close'
-# ===============================
+
 
 share_df            = load_ohlc_data_file()                                             # load the OHLC share data from Disk
 share_df            = add_date_features( share_df )                                     # date related features and indicators
 
-# share_dict          = add_volumn_features( share_df )                                   # volume Indicators
-# share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
+share_dict          = add_volumn_features( share_df )                                   # volume Indicators
+share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
 
-# share_df            = convert_dict_into_single_df( share_dict )
+share_df            = convert_dict_into_single_df( share_dict )                         # ready for saving the result
 
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Code
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+value_to_predict    = 'close'
+# ===============================
 machine_learning_manager ( share_df, value_to_predict )
 
 
 
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
-
 log_application_footer( application_start_time )
+
+print ( share_df.sample(10))
+
+
+
+
+
 
 
 # for share_code, share_data in share_dict.items():

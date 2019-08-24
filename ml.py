@@ -20,7 +20,7 @@ from application_log                import print_line_of_dashes
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing, log_df_process_completed
 from common                         import format_currency_total
-
+from features                       import remove_minimal_impact_features
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Logging
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,7 +50,6 @@ def results_model_overview( model, value_to_predict ):
 
     # sys.stdout = old_stdout
     # print_log ( log_file, log_file_name )
-
 
 def results_model_performance ( model, single_country_df, y_train, y_test, X_train, X_test, value_to_predict ): 
     # log_file_name = '2_model_performance'
@@ -84,9 +83,6 @@ def results_model_performance ( model, single_country_df, y_train, y_test, X_tra
     # print_log ( log_file, log_file_name )
 
 def results_important_features( model, feature_labels ):
-    # log_file_name = '3_important_feature'
-    # old_stdout, log_file = log_screen_print_statements( log_file_name, sys.stdout )
-
     print_line_of_dashes()
     print ( 'Feature Importance (descending order) - relative to overall importance' )
     print_line_of_dashes()
@@ -98,17 +94,13 @@ def results_important_features( model, feature_labels ):
         print (   str( feature_labels[index] ).ljust( 30 ), importance_percent)
     print_line_of_dashes()   
 
-    # sys.stdout = old_stdout
-    # print_log ( log_file, log_file_name )
-
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Workers
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-def feature_list( share_df ):
+def potential_feature_list( share_df ):
     function_start_time = time.time()
-    log_process_commencing  ( 'determine list of share features' )
+    log_process_commencing  ( 'determine full list of potential share features' )
 
     column_name_list_from_share_df = list(share_df.columns.values)
     valid_ml_feature_columns = []
@@ -147,7 +139,9 @@ def create_df_with_features_only ( share_df, features ):
 # Ordinary Least Squares (OLS) - Linear Regression Analysis
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def ordinary_least_squares_regression ( features_only_df, value_to_predict, feature_labels ):
-    # print_short_dash_line()
+    print_line_of_dashes()
+    print ( 'OLS Regression Results' )
+    print_line_of_dashes()
 
     formula_string =  str( value_to_predict + ' ~ ' )
     for feature in feature_labels:
@@ -155,14 +149,9 @@ def ordinary_least_squares_regression ( features_only_df, value_to_predict, feat
     formula_string = formula_string[:-1]  
 
     ols_result = smf.ols(formula=formula_string, data=features_only_df).fit()
-    
-    # log_file_name = '4_ols_result'
-    # old_stdout, log_file = log_screen_print_statements( log_file_name, sys.stdout )
 
     print ( ols_result.summary(), '\n' )
-    
-    # sys.stdout = old_stdout
-    # print_log ( log_file, log_file_name )
+    print_line_of_dashes()   
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -198,16 +187,20 @@ def machine_learning_manager( share_df, value_to_predict ):
     core_process_start_time     = time.time()
     log_core_process_header     (  core_process_name )
 
-    valid_ml_feature_columns, invalid_ml_feature_columns = feature_list( share_df)
-    print ( '' )
-    print ( valid_ml_feature_columns )
-    print ( '' )
-    # print ( feature_labels )
-    # print ( '' )
-    print ( invalid_ml_feature_columns )
+    valid_ml_feature_columns, invalid_ml_feature_columns = potential_feature_list( share_df)
+    # print ( 'Valid Feature List' )
+    # print ( valid_ml_feature_columns )
+    # print ( 'In Valid Feature List' )
+    # print ( invalid_ml_feature_columns )
+
+
+    # features  = remove_multi_collinearity_features( features )
+    features  = remove_minimal_impact_features    ( valid_ml_feature_columns, share_df )
+    features  = sorted( features )
+
     features_only_df = create_df_with_features_only( share_df, valid_ml_feature_columns )
 
-    # gradient_boosting_regressor( features_only_df, share_df, feature_labels, value_to_predict )
+
     gradient_boosting_regressor( features_only_df, share_df, valid_ml_feature_columns, value_to_predict )
 
     ordinary_least_squares_regression ( share_df, value_to_predict, valid_ml_feature_columns )
