@@ -47,3 +47,17 @@ def remove_minimal_impact_features( features, share_df ):
     
     log_df_process_completed( share_df, function_start_time )
     return ( features )
+
+def remove_multi_collinearity_features( features, share_df ):
+    function_start_time = time.time()  
+    log_process_commencing  ( 'remove multi collinearity features' )
+
+    multi_collinearity_list     =   { 
+                                    }
+
+    for feature in multi_collinearity_list.keys():
+        if feature in features:
+            features.remove( feature )   
+    
+    log_df_process_completed( share_df, function_start_time )
+    return ( features )

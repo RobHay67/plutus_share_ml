@@ -52,9 +52,6 @@ def results_model_overview( model, value_to_predict ):
     # print_log ( log_file, log_file_name )
 
 def results_model_performance ( model, single_country_df, y_train, y_test, X_train, X_test, value_to_predict ): 
-    # log_file_name = '2_model_performance'
-    # old_stdout, log_file = log_screen_print_statements( log_file_name, sys.stdout )
-
     print_line_of_dashes()
     print ( 'Machine Learning Model Results' )
     print_line_of_dashes()

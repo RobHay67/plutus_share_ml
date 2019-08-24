@@ -9,7 +9,7 @@
 #  Calculation Methodology
     # its going to take a long time to work out the chages for all the historical data
     # we need a method to only work on certain periods or where we have added  new price value of feature
-#   Consider changing the way the previous price is looked up - might be able to do it by shifting a col of the dataframe - could be quicker
+# DONE Consider changing the way the previous price is looked up - might be able to do it by shifting a col of the dataframe - could be quicker
 
 # DONE ==================================================================================================
 #  Period Identifyer
@@ -27,7 +27,6 @@
 
 # WIP ==================================================================================================
 # Date Related features
-    # PREFIX = feature_date_
     # DONE  - _is_mon               - day of the week
     # DONE  - _is_jan               - which month
     # todo  - _is_pub_holiday       - Public holidays
