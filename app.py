@@ -37,7 +37,7 @@ share_df            = load_ohlc_data_file()                                     
 # share_df            = add_date_features( share_df )                                     # date related features and indicators
 
 share_dict          = add_volumn_features( share_df )                                   # volume Indicators
-# share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
+share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
 
 share_df            = convert_dict_into_single_df( share_dict )                         # ready for saving the result
 
@@ -57,7 +57,7 @@ log_application_footer( application_start_time )
 
 
 
-print ( share_df.sample(10))
+print ( share_df.head(10))
 
 
 
