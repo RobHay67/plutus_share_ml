@@ -8,6 +8,13 @@ import time                         # for reporting how much time the functions 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_df_process_completed
+from common                         import past_and_future_periods, moving_average_periods, col_name_close_future, col_name_price_higher
+from features_price                 import closing_price_column_name
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Module Values
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# closing_price_column_name = 'close'
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -68,13 +75,14 @@ def remove_multi_collinearity_features( features, share_df ):
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Prediction Features
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 def close_higher_in_future( share_df ):
-    # future_close_01 < close
     function_start_time = time.time()
     log_process_commencing( str( 'determine if price is higher tomorrow' )  )
 
-    share_df['Y_close'] = np.where( share_df['future_close_01'] > share_df['close'], 1, 0)   
+    for period_no in past_and_future_periods:       
+        future_close_column      = col_name_close_future( period_no )
+        close_higher_column_name = col_name_price_higher( period_no )
+        share_df[ close_higher_column_name ] = np.where( share_df[ future_close_column ] > share_df[ closing_price_column_name ], 1, 0)   
 
     log_df_process_completed( share_df, function_start_time )       
     return ( share_df )

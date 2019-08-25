@@ -34,22 +34,40 @@ def format_currency_total( value ):
 
 def col_name_volume_past( period_no ):
     formatted_period_no = format_period( period_no )
-    new_past_vol_col    = str( 'volume_' +  formatted_period_no + '_days_ago' )
-    return( new_past_vol_col )
+    past_volume_column    = str( 'volume_' +  formatted_period_no + '_days_ago' )
+    return( past_volume_column )
 
 def col_name_volume_future( period_no ):
     formatted_period_no = format_period( period_no )
-    new_future_vol_col  = str( 'volume_' +  formatted_period_no + '_days_in_future')
-    return( new_future_vol_col )
+    future_volume_column  = str( 'volume_' +  formatted_period_no + '_days_in_future')
+    return( future_volume_column )
 
 
-def col_name_moving_average( period_no ):
+def col_name_volume_moving_average( period_no ):
     formatted_period_no = format_period( period_no )
-    mov_avg = str( 'volume_ma_' +  formatted_period_no )
-    ma_per_minute = mov_avg + '_per_minute'
-    return( mov_avg, ma_per_minute )
+    volume_moving_average_column     = str( 'volume_ma_' +  formatted_period_no )
+    moving_average_per_minute_column = volume_moving_average_column + '_per_minute'
+    return( volume_moving_average_column, moving_average_per_minute_column )
 
+def col_name_close_moving_average( period_no ):
+    formatted_period_no = format_period( period_no )
+    close_moving_average_column = str( 'close_ma_' +  formatted_period_no )
+    return( close_moving_average_column )
 
+def col_name_close_past( period_no ):
+    formatted_period_no = format_period( period_no )
+    past_volumn_column    = str( 'close_' +  formatted_period_no + '_days_ago' )
+    return( past_volumn_column )
+
+def col_name_close_future( period_no ):
+    formatted_period_no = format_period( period_no )
+    future_volumn_column  = str( 'close_' +  formatted_period_no + '_days_in_future')
+    return( future_volumn_column )
+
+def col_name_price_higher( period_no ):
+    formatted_period_no = format_period( period_no )
+    future_close_higher_column = str( 'Y_close_' + formatted_period_no + '_days')
+    return( future_close_higher_column )
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -47,8 +47,8 @@ share_df            = add_primary_analysis_features( share_df )                 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Code
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# value_to_predict    = 'close'
-# machine_learning_manager ( share_df, value_to_predict )
+value_to_predict    = 'Y_close_01_days'
+machine_learning_manager ( share_df, value_to_predict )
 
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
@@ -57,7 +57,7 @@ log_application_footer( application_start_time )
 
 
 
-print ( share_df.head(10))
+# print ( share_df.head(10))
 
 
 

@@ -6,42 +6,39 @@ import time                             # for reporting how much time the functi
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from common                         import format_period, past_and_future_periods, moving_average_periods
+from common                         import past_and_future_periods, moving_average_periods
+from common                         import col_name_close_past, col_name_close_future, col_name_close_moving_average
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_dict_process_completed
 
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Module Values
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+closing_price_column_name = 'close'
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Worker Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def time_shifted_close_price( share_data ):
-    # past_and_future_periods = [ 1, 2, 3, 4, 5, 10 ]
-    
+def time_shifted_close_price( share_data ):   
     for period_no in past_and_future_periods:       
-        formatted_period_no = format_period( period_no )
+        new_past_close_column    = col_name_close_past  ( period_no )
+        new_future_close_column  = col_name_close_future( period_no )
 
-        new_past_vol_col    = str( 'past_close_' +  formatted_period_no )
-        new_future_vol_col  = str( 'future_close_' +  formatted_period_no )
+        share_data[ new_past_close_column ]       = share_data[ closing_price_column_name ].shift( period_no )
+        share_data[ new_future_close_column ]     = share_data[ closing_price_column_name ].shift( period_no * -1 )
 
-        share_data[ new_past_vol_col ]       = share_data['close'].shift( period_no )
-        share_data[ new_future_vol_col ]     = share_data['close'].shift( period_no * -1 )
-
-        share_data[ new_past_vol_col ].fillna  ( share_data['close'], inplace=True)
-        share_data[ new_future_vol_col ].fillna( share_data['close'], inplace=True)
+        share_data[ new_past_close_column   ].fillna  ( share_data[ closing_price_column_name ], inplace=True)
+        share_data[ new_future_close_column ].fillna( share_data[ closing_price_column_name ], inplace=True)
     return ( share_data )
 
-def close_moving_average( share_data ):
-    moving_average_periods = [ 8, 21 ]
-    
+def close_moving_average( share_data ):   
     for period_no in moving_average_periods:
-        formatted_period_no = format_period( period_no )
-
-        new_moving_average_col    = str( 'close_ma_' +  formatted_period_no )
+        new_moving_average_col = col_name_close_moving_average( period_no )
 
         share_data[ new_moving_average_col ] = share_data.close.rolling(period_no).mean() 
 
-        share_data[ new_moving_average_col ].fillna  ( share_data['close'], inplace=True)
+        share_data[ new_moving_average_col ].fillna  ( share_data[ closing_price_column_name ], inplace=True)
     return ( share_data )
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
