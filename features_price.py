@@ -6,7 +6,7 @@ import time                             # for reporting how much time the functi
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from common                         import format_period
+from common                         import format_period, past_and_future_periods, moving_average_periods
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_dict_process_completed
 
@@ -16,9 +16,9 @@ from application_log                import log_process_commencing,  log_dict_pro
 # Worker Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def time_shifted_close_price( share_data ):
-    required_periods = [ 1, 2, 3, 4, 5, 10 ]
+    # past_and_future_periods = [ 1, 2, 3, 4, 5, 10 ]
     
-    for period_no in required_periods:       
+    for period_no in past_and_future_periods:       
         formatted_period_no = format_period( period_no )
 
         new_past_vol_col    = str( 'past_close_' +  formatted_period_no )
@@ -32,9 +32,9 @@ def time_shifted_close_price( share_data ):
     return ( share_data )
 
 def close_moving_average( share_data ):
-    required_periods = [ 8, 21 ]
+    moving_average_periods = [ 8, 21 ]
     
-    for period_no in required_periods:
+    for period_no in moving_average_periods:
         formatted_period_no = format_period( period_no )
 
         new_moving_average_col    = str( 'close_ma_' +  formatted_period_no )
