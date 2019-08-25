@@ -17,7 +17,7 @@ from application_log                import log_process_commencing,  log_df_proce
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Worker Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def add_average_volume( share_df ):
+def avg_vol_per_minute( share_df ):
     if 'volume' in share_df.columns:
         function_start_time = time.time()
         log_process_commencing( str( 'adding average volume to OHLC df' )  )
@@ -28,15 +28,14 @@ def add_average_volume( share_df ):
         return ( share_df )
     else: log_df_process_completed( share_df, time.time(), error_message='volume col missing from shares_df' ); return( share_df )
 
-
 def time_shifted_average_volume( share_data ):
     required_periods = [ 1, 2, 3, 4, 5, 10 ]
 
     for period_no in required_periods:
         formatted_period_no = format_period( period_no )
 
-        new_past_vol_col    = str( 'past_vol_' +  formatted_period_no )
-        new_future_vol_col  = str( 'future_vol_' +  formatted_period_no )
+        new_past_vol_col    = str( 'volume_' +  formatted_period_no + '_days_ago' )
+        new_future_vol_col  = str( 'volume_' +  formatted_period_no + '_days_in_future')
 
         share_data[ new_past_vol_col ]       = share_data['volume_average_per_minute'].shift( period_no )
         share_data[ new_future_vol_col ]     = share_data['volume_average_per_minute'].shift( period_no * -1 )
@@ -55,7 +54,7 @@ def add_volumn_features( share_df ):
     log_core_process_header     (  core_process_name )
    
 
-    share_df            = add_average_volume( share_df )        # Average Volume
+    share_df            = avg_vol_per_minute( share_df )        # Average Volume
     
     share_dict          = create_share_dict( share_df )         # convert df to dictionary for faster time shifting
 

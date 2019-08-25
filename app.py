@@ -19,7 +19,7 @@ import time                         # for reporting how much time the functions 
 from application_log                import log_application_header, log_application_footer
 from common                         import convert_dict_into_single_df
 from data_OHLC                      import load_ohlc_data_file, save_ohlc_share_df
-from features_volume                import add_volumn_features, add_average_volume
+from features_volume                import add_volumn_features
 from features_price                 import add_price_features
 from features_dates                 import add_date_features
 from ml                             import machine_learning_manager
@@ -34,25 +34,28 @@ log_application_header()
 
 
 share_df            = load_ohlc_data_file()                                             # load the OHLC share data from Disk
-share_df            = add_date_features( share_df )                                     # date related features and indicators
+# share_df            = add_date_features( share_df )                                     # date related features and indicators
 
 share_dict          = add_volumn_features( share_df )                                   # volume Indicators
-share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
+# share_dict          = add_price_features( share_dict )                                  # Attach Price  Features to the dataset
 
 share_df            = convert_dict_into_single_df( share_dict )                         # ready for saving the result
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Code
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-value_to_predict    = 'close'
-# ===============================
-machine_learning_manager ( share_df, value_to_predict )
+# value_to_predict    = 'close'
+
+# machine_learning_manager ( share_df, value_to_predict )
 
 
 
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
+# -------------------------------------------------------------------------------------- Close Application
 log_application_footer( application_start_time )
+
+
 
 print ( share_df.sample(10))
 
