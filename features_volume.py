@@ -19,7 +19,7 @@ from common                         import volume_column_name, average_volume_pe
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Worker Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def avg_vol_per_minute( share_df ):
+def avg_volume_per_minute( share_df ):
     if volume_column_name in share_df.columns:
         function_start_time = time.time()
         log_process_commencing( str( 'adding average volume to OHLC df' )  )
@@ -43,7 +43,7 @@ def time_shifted_average_volume( share_data ):
 
     return ( share_data )
 
-def volume_moving_average( share_data ):  
+def moving_average_volume( share_data ):  
     for period_no in moving_average_periods:
         new_moving_average_col, new_moving_average_per_minute_col  = column_name_volume_moving_average( period_no )
 
@@ -65,7 +65,7 @@ def add_volume_features( share_df ):
     log_core_process_header     (  core_process_name )
    
 
-    share_df            = avg_vol_per_minute( share_df )        # Average Volume
+    share_df            = avg_volume_per_minute( share_df )        # Average Volume
     
     share_dict          = create_share_dict( share_df )         # convert df to dictionary for faster time shifting
 
@@ -79,7 +79,7 @@ def add_volume_features( share_df ):
     function_start_time = time.time()
     log_process_commencing( str( 'add moving average to volume' ) )
     for share_code, share_data in share_dict.items():
-        share_dict[share_code] = volume_moving_average( share_data )
+        share_dict[share_code] = moving_average_volume( share_data )
     log_dict_process_completed( share_dict, function_start_time )
 
 

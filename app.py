@@ -22,7 +22,7 @@ from data_OHLC                      import load_ohlc_data_file, save_ohlc_share_
 from features_volume                import add_volume_features
 from features_price                 import add_price_features
 from features_dates                 import add_date_features
-from features                       import add_primary_analysis_features
+from results_analysis               import add_results_analysis_features
 from ml                             import machine_learning_manager
 
 pd.set_option('display.max_columns', 500)
@@ -42,7 +42,7 @@ share_dict          = add_price_features( share_dict )                          
 
 share_df            = convert_dict_into_single_df( share_dict )                         # ready for saving the result
 
-share_df            = add_primary_analysis_features( share_df )                         # add in primary Y features
+share_df            = add_results_analysis_features( share_df )                         # add in primary results analysis features
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Code
