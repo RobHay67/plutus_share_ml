@@ -59,7 +59,7 @@ def volume_moving_average( share_data ):
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Manager Function
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def add_volumn_features( share_df ):
+def add_volume_features( share_df ):
     core_process_name           = 'Add Volume Features to OHLC Share data'
     core_process_start_time     = time.time()
     log_core_process_header     (  core_process_name )

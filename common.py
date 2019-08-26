@@ -35,7 +35,7 @@ def format_currency_total( value ):
 
 def col_name_volume_past( period_no ):
     formatted_period_no = format_period( period_no )
-    past_volume_column    = str( 'volume_' +  formatted_period_no + '_days_ago' )
+    past_volume_column    = str( 'volume_' +  formatted_period_no + '_days_in_past' )
     return( past_volume_column )
 
 def col_name_volume_future( period_no ):
@@ -57,7 +57,7 @@ def col_name_close_moving_average( period_no ):
 
 def col_name_close_past( period_no ):
     formatted_period_no = format_period( period_no )
-    past_volumn_column    = str( 'close_' +  formatted_period_no + '_days_ago' )
+    past_volumn_column    = str( 'close_' +  formatted_period_no + '_days_in_past' )
     return( past_volumn_column )
 
 def col_name_close_future( period_no ):

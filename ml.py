@@ -191,10 +191,11 @@ def machine_learning_manager( share_df, value_to_predict ):
 
     features_only_df = create_df_with_features_only( share_df, valid_ml_feature_columns )
 
-
-    gradient_boosting_regressor( features_only_df, share_df, valid_ml_feature_columns, value_to_predict )
-
-    ordinary_least_squares_regression ( share_df, value_to_predict, valid_ml_feature_columns )
+    if len( features_only_df.columns ) > 0:
+        gradient_boosting_regressor( features_only_df, share_df, valid_ml_feature_columns, value_to_predict )
+        ordinary_least_squares_regression ( share_df, value_to_predict, valid_ml_feature_columns )
+    else:
+        print( 'FAILED to run Machine Learning - No features identifed which can be utilised to produce a result')
 
 
 
