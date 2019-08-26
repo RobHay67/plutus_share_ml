@@ -12,7 +12,7 @@ import time                             # for reporting how much time the functi
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_df_process_completed, log_dict_process_completed
 from common                         import create_share_dict, past_and_future_periods, moving_average_periods
-from common                         import col_name_volume_moving_average, col_name_volume_past, col_name_volume_future
+from common                         import column_name_volume_moving_average, column_name_volume_past, column_name_volume_future
 from common                         import volume_column_name, average_volume_per_minute_column_name, minutes_per_day
 
 
@@ -32,8 +32,8 @@ def avg_vol_per_minute( share_df ):
 
 def time_shifted_average_volume( share_data ):
     for period_no in past_and_future_periods:
-        new_past_vol_col    = col_name_volume_past  ( period_no )
-        new_future_vol_col  = col_name_volume_future( period_no )
+        new_past_vol_col    = column_name_volume_past  ( period_no )
+        new_future_vol_col  = column_name_volume_future ( period_no )
 
         share_data[ new_past_vol_col ]       = share_data[ average_volume_per_minute_column_name ].shift( period_no )
         share_data[ new_future_vol_col ]     = share_data[ average_volume_per_minute_column_name ].shift( period_no * -1 )
@@ -45,7 +45,7 @@ def time_shifted_average_volume( share_data ):
 
 def volume_moving_average( share_data ):  
     for period_no in moving_average_periods:
-        new_moving_average_col, new_moving_average_per_minute_col  = col_name_volume_moving_average( period_no )
+        new_moving_average_col, new_moving_average_per_minute_col  = column_name_volume_moving_average( period_no )
 
         share_data[ new_moving_average_col ]            = share_data.volume.rolling(period_no).mean() 
         share_data[ new_moving_average_per_minute_col ] = share_data[ new_moving_average_col ] / minutes_per_day   

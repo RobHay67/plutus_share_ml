@@ -17,7 +17,7 @@ import time                         # for reporting how much time the functions 
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_application_header, log_application_footer
-from common                         import convert_dict_into_single_df
+from common                         import convert_dict_into_single_df, sort_df_into_alphabetical_order
 from data_OHLC                      import load_ohlc_data_file, save_ohlc_share_df
 from features_volume                import add_volume_features
 from features_price                 import add_price_features
@@ -47,8 +47,8 @@ share_df            = add_primary_analysis_features( share_df )                 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Code
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-value_to_predict    = 'Y_close_01_days'
-machine_learning_manager ( share_df, value_to_predict )
+# value_to_predict    = 'y_close_up_in_01_days'
+# machine_learning_manager ( share_df, value_to_predict )
 
 # -------------------------------------------------------------------------------------- Save the OHLC Share Dataframe to Disk
 # save_ohlc_share_df( share_df )
@@ -56,8 +56,11 @@ machine_learning_manager ( share_df, value_to_predict )
 log_application_footer( application_start_time )
 
 
+share_df = sort_df_into_alphabetical_order( share_df )
+
 # print ( list(share_df) )
 print ( share_df.head(10))
+# print ( share_df[[ 'close', 'volume', 'volume_average_per_minute', 'volume_ma_03_per_minute', 'volume_ma_08_per_minute', 'volume_ma_21_per_minute', 'Y_close_up_in_01_days']] )
 
 
 

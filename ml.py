@@ -197,9 +197,6 @@ def machine_learning_manager( share_df, value_to_predict ):
     else:
         print( 'FAILED to run Machine Learning - No features identifed which can be utilised to produce a result')
 
-
-
-
     log_core_process_footer( core_process_name, core_process_start_time )
 
 
