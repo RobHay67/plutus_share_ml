@@ -14,7 +14,7 @@ from common                         import column_name_close_past, column_name_c
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Worker Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def time_shifted_close_price( share_data ):   
+def time_shifted_close( share_data ):   
     for period_no in past_and_future_periods:       
         new_past_close_column    = column_name_close_past  ( period_no )
         new_future_close_column  = column_name_close_future( period_no )
@@ -47,7 +47,7 @@ def add_price_features( share_dict ):
     function_start_time = time.time()
     log_process_commencing( str( 'add past & future price' ) )
     for share_code, share_data in share_dict.items():
-        share_dict[share_code] = time_shifted_close_price ( share_data )
+        share_dict[share_code] = time_shifted_close ( share_data )
     log_dict_process_completed( share_dict, function_start_time )
     #------------------------------------------------------------- moving average for close
     function_start_time = time.time()
