@@ -19,7 +19,7 @@ import statsmodels.formula.api as smf
 from application_log                import print_line_of_dashes
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing, log_df_process_completed
-from common                         import format_currency_total
+from common                         import format_currency_total, close_column_name
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Machine Learning Feature Management
@@ -29,10 +29,10 @@ def remove_minimal_impact_features( features, share_df ):
     log_process_commencing  ( 'determine list of share features' )
 
     prediction_features =   {
-                            closing_price_column_name   : 'primary prediction value'
+                            close_column_name   : 'primary prediction value'
                             }
     for column in share_df:
-        if column[:2] == 'Y_':                                                  # add any columns with a Y prefix as these are potentially things we want to try and predict
+        if column[:2] == 'y_':                                                  # add any columns with a Y prefix as these are potentially things we want to try and predict
             prediction_features.update( { column : 'Prediction Variable'} )
 
     import_features =       {
@@ -241,8 +241,7 @@ def machine_learning_manager( share_df, value_to_predict ):
     valid_ml_feature_columns, invalid_ml_feature_columns = potential_feature_list( share_df)
     # print ( 'Valid Feature List' )
     # print ( valid_ml_feature_columns )
-    # print ( 'In Valid Feature List' )
-    # print ( invalid_ml_feature_columns )
+   
 
 
     # features  = remove_multi_collinearity_features( features )
@@ -256,6 +255,10 @@ def machine_learning_manager( share_df, value_to_predict ):
         ordinary_least_squares_regression ( share_df, value_to_predict, valid_ml_feature_columns )
     else:
         print( 'FAILED to run Machine Learning - No features identifed which can be utilised to produce a result')
+
+    print ( 'Invalid Feature List' )
+    print ( invalid_ml_feature_columns )
+
 
     log_core_process_footer( core_process_name, core_process_start_time )
 

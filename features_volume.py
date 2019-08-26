@@ -12,8 +12,8 @@ import time                             # for reporting how much time the functi
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_df_process_completed, log_dict_process_completed
 from common                         import create_share_dict, past_and_future_periods, moving_average_periods
-from common                         import column_name_volume_moving_average, column_name_volume_past, column_name_volume_future
-from common                         import volume_column_name, average_volume_per_minute_column_name, minutes_per_day
+from common                         import determine_column_name_volume_moving_average, determine_column_name_volume_past, determine_column_name_volume_future
+from common                         import volume_column_name, volume_average_per_minute_column_name, minutes_per_day
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ def avg_volume_per_minute( share_df ):
         function_start_time = time.time()
         log_process_commencing( str( 'adding average volume to OHLC df' )  )
 
-        share_df[average_volume_per_minute_column_name]    = share_df[ volume_column_name ] / minutes_per_day               
+        share_df[volume_average_per_minute_column_name]    = share_df[ volume_column_name ] / minutes_per_day               
 
         log_df_process_completed( share_df, function_start_time )       
         return ( share_df )
@@ -32,26 +32,26 @@ def avg_volume_per_minute( share_df ):
 
 def time_shifted_average_volume( share_data ):
     for period_no in past_and_future_periods:
-        new_past_vol_col    = column_name_volume_past  ( period_no )
-        new_future_vol_col  = column_name_volume_future ( period_no )
+        new_past_vol_col    = determine_column_name_volume_past  ( period_no )
+        new_future_vol_col  = determine_column_name_volume_future ( period_no )
 
-        share_data[ new_past_vol_col ]       = share_data[ average_volume_per_minute_column_name ].shift( period_no )
-        share_data[ new_future_vol_col ]     = share_data[ average_volume_per_minute_column_name ].shift( period_no * -1 )
+        share_data[ new_past_vol_col ]       = share_data[ volume_average_per_minute_column_name ].shift( period_no )
+        share_data[ new_future_vol_col ]     = share_data[ volume_average_per_minute_column_name ].shift( period_no * -1 )
 
-        share_data[ new_past_vol_col ].fillna  ( share_data[ average_volume_per_minute_column_name ], inplace=True)
-        share_data[ new_future_vol_col ].fillna( share_data[ average_volume_per_minute_column_name ], inplace=True)
+        share_data[ new_past_vol_col ].fillna  ( share_data[ volume_average_per_minute_column_name ], inplace=True)
+        share_data[ new_future_vol_col ].fillna( share_data[ volume_average_per_minute_column_name ], inplace=True)
 
     return ( share_data )
 
 def moving_average_volume( share_data ):  
     for period_no in moving_average_periods:
-        new_moving_average_col, new_moving_average_per_minute_col  = column_name_volume_moving_average( period_no )
+        new_moving_average_col, new_moving_average_per_minute_col  = determine_column_name_volume_moving_average( period_no )
 
         share_data[ new_moving_average_col ]            = share_data.volume.rolling(period_no).mean() 
         share_data[ new_moving_average_per_minute_col ] = share_data[ new_moving_average_col ] / minutes_per_day   
 
         share_data[ new_moving_average_col            ].fillna  ( share_data[ volume_column_name ],                    inplace=True)
-        share_data[ new_moving_average_per_minute_col ].fillna  ( share_data[ average_volume_per_minute_column_name ], inplace=True)
+        share_data[ new_moving_average_per_minute_col ].fillna  ( share_data[ volume_average_per_minute_column_name ], inplace=True)
     return ( share_data )
 
 

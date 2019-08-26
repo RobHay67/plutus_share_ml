@@ -13,9 +13,9 @@ from application_log                  import log_process_commencing, log_dict_pr
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 past_and_future_periods                 = [ 1, 2, 3, 4, 5, 10 ]
 moving_average_periods                  = [ 1, 2, 3, 5, 8, 13, 21, 34 ]
-closing_price_column_name               = 'close'
+close_column_name                       = 'close'
 volume_column_name                      = 'volume'
-average_volume_per_minute_column_name   = 'volume_average_per_minute'
+volume_average_per_minute_column_name   = 'volume_average_per_minute'
 minutes_per_day                         = 360                                 # Opening time = 10am and closing time = 4pm. Total minutes = 6 * 60 = 360 minutes
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -42,51 +42,57 @@ def sort_df_into_alphabetical_order( share_df ):
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Column Naming Functions
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-def column_name_volume_past( period_no ):
+def determine_column_name_volume_past( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'volume_-_' +  formatted_period_no + '_day' )
+    column_name         = str( 'volume_' +  formatted_period_no + '_past' )
     return( column_name )
 
-def column_name_volume_future( period_no ):
+def determine_column_name_volume_future( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'volume_+_' +  formatted_period_no + '_day')
+    column_name         = str( 'volume_' +  formatted_period_no + '_future')
     return( column_name )
 
 
-def column_name_volume_moving_average( period_no ):
+def determine_column_name_volume_moving_average( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'volume_ma_' +  formatted_period_no )
+    column_name         = str( 'volume_' +  formatted_period_no + '_ma')
     column_name_per_min = column_name + '_per_min'
     return( column_name, column_name_per_min )
 
-def column_name_volume_ma_higher( period_no ):
+def determine_column_name_volume_ma_higher( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'volume_ma_up_' + formatted_period_no + '_per_min')
+    column_name         = str( 'volume_' + formatted_period_no + '_ma_per_min_UP')
     return( column_name )
 
 
 
 
 
-def column_name_close_past( period_no ):
+def determine_column_name_close_past( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'close_-_' +  formatted_period_no + '_day' )
+    column_name         = str( 'close_' +  formatted_period_no + '_past' )
     return( column_name )
 
-def column_name_close_future( period_no ):
+def determine_column_name_close_future( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'close_+_' +  formatted_period_no + '_day')
+    column_name         = str( 'close_' +  formatted_period_no + '_future')
     return( column_name )
 
-def column_name_close_moving_average( period_no ):
+def determine_column_name_close_moving_average( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'close_ma_' +  formatted_period_no )
+    column_name         = str( 'close_' +  formatted_period_no + '_ma')
     return( column_name )
 
-def column_name_price_higher( period_no ):
+def determine_column_name_close_higher( period_no ):
     formatted_period_no = format_period( period_no )
-    column_name         = str( 'y_close_up_in_' + formatted_period_no + '_days')
+    column_name         = str( 'y_close_' + formatted_period_no + '_UP')
     return( column_name )
+
+
+# def determine_column_name_price_higher( period_no ):
+#     formatted_period_no = format_period( period_no )
+#     column_name         = str( 'y_close_up_in_' + formatted_period_no + '_days')
+#     return( column_name )
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------

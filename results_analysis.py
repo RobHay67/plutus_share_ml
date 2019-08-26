@@ -8,8 +8,8 @@ import time                         # for reporting how much time the functions 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_df_process_completed
-from common                         import closing_price_column_name, past_and_future_periods, column_name_close_future, column_name_price_higher
-from common                         import average_volume_per_minute_column_name, moving_average_periods, column_name_volume_ma_higher, column_name_volume_moving_average
+from common                         import close_column_name, past_and_future_periods, determine_column_name_close_future, determine_column_name_close_higher
+from common                         import volume_average_per_minute_column_name, moving_average_periods, determine_column_name_volume_ma_higher, determine_column_name_volume_moving_average
 
 
 
@@ -22,10 +22,10 @@ def volume_above_ma_per_minute( share_df ):
     log_process_commencing( str( 'determine if volume is above moving averages' )  )
 
     for period_no in moving_average_periods: 
-        new_moving_average_col, new_moving_average_per_minute_col  = column_name_volume_moving_average( period_no )
+        new_moving_average_col, new_moving_average_per_minute_col  = determine_column_name_volume_moving_average( period_no )
         # print ( new_moving_average_per_minute_col )
-        volume_ma_higher_column_name = column_name_volume_ma_higher( period_no )
-        share_df[ volume_ma_higher_column_name ] = np.where( share_df[ average_volume_per_minute_column_name ] > share_df[ new_moving_average_per_minute_col ], 1, 0)   
+        volume_ma_higher_column_name = determine_column_name_volume_ma_higher( period_no )
+        share_df[ volume_ma_higher_column_name ] = np.where( share_df[ volume_average_per_minute_column_name ] > share_df[ new_moving_average_per_minute_col ], 1, 0)   
 
     log_df_process_completed( share_df, function_start_time )       
     return ( share_df )
@@ -38,9 +38,11 @@ def close_higher_in_future( share_df ):
     log_process_commencing( str( 'determine if price is higher tomorrow' )  )
 
     for period_no in past_and_future_periods:       
-        future_close_column      = column_name_close_future( period_no )
-        close_higher_column_name = column_name_price_higher( period_no )
-        share_df[ close_higher_column_name ] = np.where( share_df[ future_close_column ] > share_df[ closing_price_column_name ], 1, 0)   
+        close_future_column     = determine_column_name_close_future( period_no )
+        close_higher_column     = determine_column_name_close_higher( period_no )
+        # close_higher_analysis   = 'y_' + close_higher_column
+        share_df[ close_higher_column ] = np.where( share_df[ close_future_column ] > share_df[ close_column_name ], 1, 0)   
+        # share_df[ close_higher_analysis ] = share_df[ close_higher_column ]
 
     log_df_process_completed( share_df, function_start_time )       
     return ( share_df )
