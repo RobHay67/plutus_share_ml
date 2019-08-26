@@ -18,30 +18,37 @@ def remove_minimal_impact_features( features, share_df ):
     function_start_time = time.time()
     log_process_commencing  ( 'determine list of share features' )
 
-    import_features =   {
-                        'counter_min'               : '0 impact', 
-                        }
+    prediction_features =   {
+                            closing_price_column_name   : 'primary prediction value'
+                            }
+    for column in share_df:
+        if column[:2] == 'Y_':                                                  # add any columns with a Y prefix as these are potentially things we want to try and predict
+            prediction_features.update( { column : 'Prediction Variable'} )
+
+    import_features =       {
+                            'counter_min'               : '0 impact', 
+                            }
     
-    date_features =     { 
-                        'feat_date_is_sun'          : '0 impact', 
-                        'feat_date_is_sat'          : '0 impact', 
-                        'feat_date_is_nov'          : '< 5% impact', 
-                        'feat_date_is_mar'          : '< 5% impact', 
-                        'feat_date_is_dec'          : '< 5% impact', 
-                        'feat_date_is_fri'          : '< 5% impact', 
-                        'feat_date_is_oct'          : '< 5% impact', 
-                        'feat_date_is_jun'          : '< 5% impact', 
-                        'feat_date_is_thur'         : '< 5% impact', 
-                        'feat_date_is_feb'          : '< 5% impact', 
-                        'feat_date_is_apr'          : '< 5% impact', 
-                        }
-    price_features =    {                       
-                        }
+    date_features =         { 
+                            'feat_date_is_sun'          : '0 impact', 
+                            'feat_date_is_sat'          : '0 impact', 
+                            'feat_date_is_nov'          : '< 5% impact', 
+                            'feat_date_is_mar'          : '< 5% impact', 
+                            'feat_date_is_dec'          : '< 5% impact', 
+                            'feat_date_is_fri'          : '< 5% impact', 
+                            'feat_date_is_oct'          : '< 5% impact', 
+                            'feat_date_is_jun'          : '< 5% impact', 
+                            'feat_date_is_thur'         : '< 5% impact', 
+                            'feat_date_is_feb'          : '< 5% impact', 
+                            'feat_date_is_apr'          : '< 5% impact', 
+                            }
+    price_features =        {                       
+                            }
 
-    volume_features =   { 
-                        }
+    volume_features =       { 
+                            }
 
-    features_with_minimal_impact = { **import_features, **date_features, **price_features, **volume_features }
+    features_with_minimal_impact = { **prediction_features,  **import_features, **date_features, **price_features, **volume_features }
 
     for feature in features_with_minimal_impact.keys():
         if feature in features:

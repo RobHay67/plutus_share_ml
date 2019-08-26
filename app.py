@@ -56,7 +56,7 @@ machine_learning_manager ( share_df, value_to_predict )
 log_application_footer( application_start_time )
 
 
-
+print ( list(share_df) )
 # print ( share_df.head(10))
 
 

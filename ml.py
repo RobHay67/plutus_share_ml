@@ -27,9 +27,6 @@ from features                       import remove_minimal_impact_features
 
 def results_model_overview( model, value_to_predict ):
     print( '' )
-    # log_file_name = '1_model_overview'
-    # old_stdout, log_file = log_screen_print_statements( log_file_name, sys.stdout )
-
     print_line_of_dashes()
     print ( 'Machine Learning Model Summary' )
     print_line_of_dashes()
@@ -45,11 +42,8 @@ def results_model_overview( model, value_to_predict ):
             str( 'max_features  ='      ).ljust( 10, ' ' ), str( model.max_features     ).ljust( 5, ' ' ),
             str( 'loss      ='          ).ljust( 10, ' ' ), str( model.loss )                
             )
-    print ( str( 'value for analysis =' ).ljust( 20, ' ' ), value_to_predict )
+    print ( str( 'PREDICTION value   =' ).ljust( 20, ' ' ), value_to_predict )
     print_line_of_dashes()
-
-    # sys.stdout = old_stdout
-    # print_log ( log_file, log_file_name )
 
 def results_model_performance ( model, single_country_df, y_train, y_test, X_train, X_test, value_to_predict ): 
     print_line_of_dashes()
