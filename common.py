@@ -3,19 +3,20 @@
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 import pandas as pd
 import time                             # for reporting how much time the functions take to finish
-
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                  import log_core_process_header, log_core_process_footer
 from application_log                  import log_process_commencing, log_dict_process_completed, log_df_process_completed
-
-
-
-past_and_future_periods = [ 1, 2, 3, 4, 5, 10 ]
-moving_average_periods  = [ 8, 21 ]
-
-
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Module Values
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+past_and_future_periods                 = [ 1, 2, 3, 4, 5, 10 ]
+moving_average_periods                  = [ 8, 21 ]
+closing_price_column_name               = 'close'
+volume_column_name                      = 'volume'
+average_volume_per_minute_column_name   = 'volume_average_per_minute'
+minutes_per_day                         = 360                                 # Opening time = 10am and closing time = 4pm. Total minutes = 6 * 60 = 360 minutes
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Common Functions

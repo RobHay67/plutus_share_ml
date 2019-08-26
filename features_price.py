@@ -6,16 +6,10 @@ import time                             # for reporting how much time the functi
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from common                         import past_and_future_periods, moving_average_periods
-from common                         import col_name_close_past, col_name_close_future, col_name_close_moving_average
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_dict_process_completed
-
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Module Values
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-closing_price_column_name = 'close'
-
+from common                         import past_and_future_periods, moving_average_periods, closing_price_column_name
+from common                         import col_name_close_past, col_name_close_future, col_name_close_moving_average
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Worker Functions

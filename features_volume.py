@@ -9,17 +9,11 @@ import time                             # for reporting how much time the functi
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Local Modules
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
-from common                         import create_share_dict, past_and_future_periods, moving_average_periods
-from common                         import col_name_volume_moving_average, col_name_volume_past, col_name_volume_future
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_df_process_completed, log_dict_process_completed
-
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Module Values
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-volume_column_name                      = 'volume'
-average_volume_per_minute_column_name   = 'volume_average_per_minute'
-minutes_per_day                         = 360                                 # Opening time = 10am and closing time = 4pm. Total minutes = 6 * 60 = 360 minutes
+from common                         import create_share_dict, past_and_future_periods, moving_average_periods
+from common                         import col_name_volume_moving_average, col_name_volume_past, col_name_volume_future
+from common                         import volume_column_name, average_volume_per_minute_column_name, minutes_per_day
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------

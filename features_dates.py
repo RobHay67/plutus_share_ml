@@ -10,6 +10,10 @@ from application_log                import log_core_process_header, log_core_pro
 from application_log                import log_process_commencing,  log_df_process_completed
 
 
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Worker Functions
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------
 def add_week_day( share_df ):
     if 'trading_date' in share_df.columns:
         function_start_time = time.time()

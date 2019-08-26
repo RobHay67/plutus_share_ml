@@ -8,13 +8,7 @@ import time                         # for reporting how much time the functions 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
 from application_log                import log_core_process_header, log_core_process_footer
 from application_log                import log_process_commencing,  log_df_process_completed
-from common                         import past_and_future_periods, moving_average_periods, col_name_close_future, col_name_price_higher
-from features_price                 import closing_price_column_name
-
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Module Values
-# --------------------------------------------------------------------------------------------------------------------------------------------------------------
-# closing_price_column_name = 'close'
+from common                         import past_and_future_periods, moving_average_periods, col_name_close_future, col_name_price_higher, closing_price_column_name
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------------------------------
